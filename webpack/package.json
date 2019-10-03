@@ -1,0 +1,13 @@
+{
+  "name": "rubik-web",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "expose-loader": "^0.7.5",
+    "worker-loader": "^0.7.1"
+  },
+  "devDependencies": {
+    "webpack": "^1.15.0",
+    "webpack-cli": "^3.3.9"
+  }
+}
