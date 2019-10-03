@@ -1,6 +1,12 @@
 # RubikCube-Web
 This project is a prototype of RubikCube-Web.
 
+## Usage
+The url of this project is http://159.226.5.97:9006/.
+
+- **Changing states manually:**
+You can change the color of a cubie by clicking the left mouse button, and you also can click the right mouse button to rotate a specific face.
+
 ## Kernel
 The kernel of RubikCube-Web to solve the rubik's cube is similar to DeepCubeA<sup>[1]</sup>.
 
@@ -14,7 +20,7 @@ The kernel of RubikCube-Web to solve the rubik's cube is similar to DeepCubeA<su
 
 >[['R', -1], ['D', -1], ['U', 1], ['R', 1], ['B', 1], ['L', -1], ['F', 1], ['D', 1], ['B', -1], ['R', 1], ['U', 1], ['L', 1], ['B', -1], ['L', -1], ['U', -1], ['L', 1], ['B', 1], ['U', -1], ['L', -1], ['D', -1], ['B', 1], ['U', 1], ['B', -1], ['D', -1], ['B', 1], ['U', -1], ['B', -1], ['D', -1], ['D', -1]]
 
-- The Encoding rule of starting state
+- The Encoding rule of starting state (not sure):
 
 |Face|Color|Code|
 |---|---|---
