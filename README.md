@@ -24,12 +24,12 @@ The kernel of RubikCube-Web to solve the rubik's cube is similar to DeepCubeA<su
 
 |Face|Color|Code|
 |---|---|---
-|U|yellow|0~8
-|D|white|9~17
-|L|blue|18~26
-|R|green|27~35
-|B|orange|36~44
-|F|red|45~53
+|U|white|0~8
+|D|yellow|9~17
+|L|orange|18~26
+|R|red|27~35
+|B|blue|36~44
+|F|green|45~53
 
 
 
