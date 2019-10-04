@@ -1,12 +1,19 @@
 var Face = require('./model').Face
 
 var stickers = [
-  0xFFD500,
-  0x0051BA,
-  0xC41E3A,
-  0x009E60,
-  0xFF5800,
-  0xFFFFFF
+  0xFFFFFF, //U, white
+  0xFF5800, //L, orange
+  0x009E60, //F, green
+  0xC41E3A, //R, red
+  0x0051BA, //B, blue
+  0xFFD500  //D, yellow
+
+//  0xFFD500, //U, yellow
+//  0x0051BA, //L, blue
+//  0xC41E3A, //F, red
+//  0x009E60, //R, green
+//  0xFF5800, //B, orange
+//  0xFFFFFF  //D, white
 ]
 
 var prod_defaults = {

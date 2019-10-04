@@ -1,4 +1,8 @@
 var dat = require('./vendor/dat.gui.min')
+var $ = require('./vendor/jquery-3.1.1.min')
+
+window.$ = $
+window.jQuery = $
 
 var Cube = require('./cube').Cube
 
@@ -12,10 +16,22 @@ var util = require('./util')
 var algorithm = require('./algorithm')
 
 var canvas = document.getElementById('canvas')
+var colorSelector = $("#color-select")
+
+$("#color-select button").click(function(){
+    colorControls.sticker = util.charToFace($(this).attr("id").split("-")[1][0]);
+    colorControls.cubie.setSticker(util.charToFace(colorControls.face), colorControls.sticker);
+    colorSelector.css("display", "none");
+    controls.state = cube.getState()
+})
+
+window.onresize = function(){
+  colorSelector.css("display", "none");
+}
 
 var cube = new Cube(canvas, {
   size: Number(util.getQueryParameter('size') || 3),
-  showLabels: false,
+  showLabels: true,
   state: util.getQueryParameter('state'),
 
   click: true,
@@ -26,23 +42,34 @@ var cube = new Cube(canvas, {
   },
 
   onCubieClick: cubieColorer,
+
+  getColorSelectState: function () {
+    if (colorSelector.css("display") == "none"){
+        return false;
+    }
+    else return true;
+  },
+
+  cancelColorSelect: function() {
+    colorSelector.css("display", "none");
+  }
 })
 
-function cubieColorer(face, cubie) {
-  presentSticker = cubie.getSticker(util.charToFace(face))
-  cubie.setSticker(util.charToFace(face), faces[(faces.indexOf(presentSticker) + 1) % 6]);
-//  cubie.setSticker(util.charToFace(face), Face.NONE);
-  controls.state = cube.getState()
+function cubieColorer(face, cubie, mouseX, mouseY) {
+  colorControls.face = face;
+  colorControls.cubie = cubie;
+  colorSelector.css("display", "block");
+  colorSelector.css("left", mouseX + 5 + "px");
+  colorSelector.css("top", mouseY - 10 + "px");
 }
 
-//var colorSelector = new dat.GUI()
-//
-//var csControls = {
-//  color: cubie.stickers
-//}
-//
-//function initColorSelector () {
-//}
+
+var colorControls = {
+  face: null,
+  cubie: null,
+  sticker: Face.NONE,
+}
+
 
 var gui = new dat.GUI()
 

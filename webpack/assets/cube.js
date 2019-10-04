@@ -87,6 +87,9 @@ function Cube (canvas, options) {
   this.moveStartListener = options.moveStartListener || defaults.moveStartListener
   this.moveEndListener = options.moveEndListener || defaults.moveEndListener
 
+  this.getColorSelectState = options.getColorSelectState
+  this.cancelColorSelect = options.cancelColorSelect
+
   this.isInitialized = false
 
   this.mouse = {
@@ -399,6 +402,8 @@ Cube.prototype._init = function _init () {
     self.mouse.hasMoved = false
     self.mouse.down = true
 
+    self.cancelColorSelect();
+
     self.mouse.timeout = setTimeout(function () {
       if (!self.mouse.hasMoved && self.longClick) {
         var rc = self._raycast()
@@ -433,9 +438,9 @@ Cube.prototype._init = function _init () {
       if (rc != undefined) {
         var face = rc.face
         if (face !== undefined) {
-          if (e.button == 0)
-              self.onCubieClick(rc.face, rc.object)
-          else if (e.button == 2) {
+          if (e.button == 2)
+              self.onCubieClick(rc.face, rc.object, e.clientX, e.clientY)
+          else if (e.button == 0) {
               self.algorithm(face)
           }
         }
