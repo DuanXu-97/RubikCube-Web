@@ -50,3 +50,8 @@ The kernel of RubikCube-Web to solve the rubik's cube is similar to DeepCubeA<su
 - Learn the interfaces of https://github.com/twinone/rubik-web
 - Apply the deep learning model in Agostinelli F, Mcaleer S, Shmakov A, et al. Solving the Rubik’s cube with deep reinforcement learning and search[J], 2019, 1(8): 356-363.
 - Learn the code in https://codeocean.com/capsule/5723040/
+
+## 开题报告
+
+![](https://image-bed-1253366698.cos.ap-guangzhou.myqcloud.com/mess/contents.png)
+
