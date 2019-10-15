@@ -5,7 +5,7 @@ This project is a prototype of RubikCube-Web.
 The url of this project is http://159.226.5.97:9006/.
 
 - **Changing states manually:**
-You can change the color of a cubie by clicking the left mouse button, and you also can click the right mouse button to rotate a specific face.
+You can change the color of a cubie by clicking the right mouse button, and you also can click the left mouse button to rotate a specific face.
 
 ## Kernel
 The kernel of RubikCube-Web to solve the rubik's cube is similar to DeepCubeA<sup>[1]</sup>.
@@ -50,3 +50,8 @@ The kernel of RubikCube-Web to solve the rubik's cube is similar to DeepCubeA<su
 - Learn the interfaces of https://github.com/twinone/rubik-web
 - Apply the deep learning model in Agostinelli F, Mcaleer S, Shmakov A, et al. Solving the Rubik’s cube with deep reinforcement learning and search[J], 2019, 1(8): 356-363.
 - Learn the code in https://codeocean.com/capsule/5723040/
+
+## 开题报告
+
+![](https://image-bed-1253366698.cos.ap-guangzhou.myqcloud.com/mess/contents.png)
+
