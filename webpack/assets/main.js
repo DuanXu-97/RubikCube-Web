@@ -151,7 +151,7 @@ function solve (selectedAlg) {
     var alg = solver.solve(new State(cube.getState()))
     var opt = algorithm.optimize(alg)
     cube.algorithm(opt)
-    controls.steps = alg
+    controls.steps = opt
     console.log('Algorithm:', alg)
   }
 
