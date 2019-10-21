@@ -132,6 +132,7 @@
 	  button: function () {}, // used for other buttons
 	  algorithm: '',
 	  steps: '',
+	  isAnimationAuto: false, //whether run animation when click solve
 	}
 
 	var algorithms = ['公式法', '最短路径法'];
@@ -153,7 +154,9 @@
 	    .onFinishChange(function () { cube.resetCamera(); })
 
 	  var s = folder('步骤分解')
-	  s.add(controls, 'steps').name('总体步骤').listen()
+	  s.add(controls, 'steps').name('总步骤').listen()
+	  s.add(controls, 'isAnimationAuto').setValue(false).name('自动播放解法').listen()
+
 
 	//  var a = folder('Animation')
 	//  var interpolators = Object.keys(interpolation.interpolators)
@@ -196,9 +199,13 @@
 	//    alert('公式法');
 	    var alg = solver.solve(new State(cube.getState()))
 	    var opt = algorithm.optimize(alg)
-	    cube.algorithm(opt)
+
 	    controls.steps = opt
 	    console.log('Algorithm:', alg)
+
+	    if (controls.isAnimationAuto) {
+	        cube.algorithm(opt)
+	    }
 	  }
 
 	  else if (selectedAlg == algorithms[1]) {
