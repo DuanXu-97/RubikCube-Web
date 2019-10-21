@@ -785,7 +785,7 @@
 	          if (e.button == 0)
 	              self.onCubieClick(rc.face, rc.object, e.clientX, e.clientY)
 	          else if (e.button == 2) {
-	              self.algorithm(face)
+	//              self.algorithm(face)
 	          }
 	        }
 	      }
