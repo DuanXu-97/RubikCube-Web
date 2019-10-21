@@ -85,6 +85,7 @@ var controls = {
   alg: util.getQueryParameter('algorithm') || '',
   button: function () {}, // used for other buttons
   algorithm: '',
+  steps: '',
 }
 
 var algorithms = ['公式法', '最短路径法'];
@@ -104,6 +105,9 @@ function initGui () {
     .onFinishChange(function (v) { cube.setLabels(v); })
   v.add(controls, 'camera').name('重置摄像机')
     .onFinishChange(function () { cube.resetCamera(); })
+
+  var s = folder('步骤分解')
+  s.add(controls, 'steps').name('总体步骤').listen()
 
 //  var a = folder('Animation')
 //  var interpolators = Object.keys(interpolation.interpolators)
@@ -147,6 +151,7 @@ function solve (selectedAlg) {
     var alg = solver.solve(new State(cube.getState()))
     var opt = algorithm.optimize(alg)
     cube.algorithm(opt)
+    controls.steps = alg
     console.log('Algorithm:', alg)
   }
 
