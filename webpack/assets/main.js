@@ -87,6 +87,7 @@ var controls = {
   algorithm: '',
   steps: '',
   isAnimationAuto: false, //whether run animation when click solve
+  move: function () {},
 }
 
 var algorithms = ['公式法', '最短路径法'];
@@ -99,7 +100,7 @@ function initGui () {
     .onChange(function () { cube.scramble(); })
   c.add(controls, 'solve').name('解魔方')
     .onChange(function () { solve(controls.algorithm); })
-  c.add(controls, 'algorithm', algorithms).setValue(algorithms[1]).name('算法')
+  c.add(controls, 'algorithm', algorithms).setValue(algorithms[0]).name('算法')
 
   var v = folder('视角')
   v.add(controls, 'labels').name('显示方位标记').listen()
@@ -109,7 +110,9 @@ function initGui () {
 
   var s = folder('步骤分解')
   s.add(controls, 'steps').name('总步骤').listen()
-  s.add(controls, 'isAnimationAuto').setValue(false).name('自动播放解法').listen()
+  s.add(controls, 'isAnimationAuto').setValue(true).name('自动播放解法').listen()
+  s.add(controls, 'move').name('执行当前步骤')
+    .onFinishChange(function () { runCurrentStep(); })
 
 
 //  var a = folder('Animation')
@@ -146,6 +149,22 @@ canvas.focus()
 
 function clickListener () {
   canvas.focus()
+}
+
+function runCurrentStep () {
+  var splitSteps = controls.steps.split(' ')
+  var currentStep = splitSteps[0]
+  cube.algorithm(currentStep)
+  var restSteps = ''
+  for (var i = 1; i < splitSteps.length; i++) {
+      if (i != splitSteps.length - 1){
+        restSteps += splitSteps[i] + ' ';
+      }
+      else{
+        restSteps += splitSteps[i];
+      }
+  }
+  controls.steps = restSteps
 }
 
 function solve (selectedAlg) {
