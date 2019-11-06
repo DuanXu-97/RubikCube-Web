@@ -15,20 +15,6 @@ def reorder(s):
     return up + down + left + right + back + front
 
 
-def calculate_states(s):
-    """
-    给定三阶魔方各面的颜色情况，计算出各色块的编号
-
-    :param s: 从 http://159.226.5.97:9006/ 获得的表示各面颜色字符串
-    :return: 长度为54的列表，作为神经网络的输入
-    """
-    state = []
-    for ch in reorder(s):
-        state.append(Colors(Moves[ch].value))
-    cube = Cube(state)
-    return cube.get_states()
-
-
 def simple_check_input(s):
     """
     初步简单检查输入是否合法，首先判断输入长度是否为9x6=54，
@@ -46,4 +32,21 @@ def simple_check_input(s):
             lst[Moves[i].value] -= 1
         if sum(lst) != 0:
             ret = False
+    return ret
+
+
+def calculate_states(s):
+    """
+    给定三阶魔方各面的颜色情况，计算出各色块的编号，并返回
+
+    :param s: 从前端获得的表示各面颜色的字符串
+    :return: 长度为54的列表，作为神经网络的输入；若输入有误则返回None
+    """
+    ret = None
+    if simple_check_input(s):
+        state = []
+        for ch in reorder(s):
+            state.append(Colors(Moves[ch].value))
+        cube = Cube(state)
+        ret = cube.get_states()
     return ret
