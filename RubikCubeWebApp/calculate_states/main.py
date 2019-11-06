@@ -1,5 +1,5 @@
-from cube import Cube
-from enums import Colors, Moves
+from .cube import Cube
+from .enums import Colors, Moves
 
 
 def reorder(s):

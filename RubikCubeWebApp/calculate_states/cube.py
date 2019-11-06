@@ -1,8 +1,8 @@
-from block import Block
+from .block import Block
 
 # 魔方类
-from enums import Faces, Colors
-from rules import RULES
+from .enums import Faces, Colors
+from .rules import RULES
 
 
 class Cube:

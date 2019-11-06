@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
+from .calculate_states import main
 import logging
 import json
 
@@ -15,4 +16,12 @@ class IndexView(View):
     def get(self, request):
         context = dict()
         return render(request, 'index.html', context)
+
+
+class SolveCubeView(View):
+    def post(self, request):
+        state_str = request.POST.get('state_str')
+        method_type = request.POST.get('method_type')
+
+        return HttpResponse('{"code": -1, "message":"魔方状态不合法"}', content_type='application/json')
 

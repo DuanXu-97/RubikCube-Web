@@ -20,4 +20,5 @@ from . import view
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', view.IndexView.as_view(), name='index'),
+    url(r'^solve_cube/$', view.SolveCubeView.as_view(), name='solve_cube'),
 ]

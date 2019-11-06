@@ -1,5 +1,5 @@
 import unittest
-from main import calculate_states
+from .main import calculate_states
 
 
 class CubeTestCase(unittest.TestCase):

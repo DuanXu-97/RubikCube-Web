@@ -168,8 +168,8 @@ function runCurrentStep () {
 }
 
 function solve (selectedAlg) {
+  // 公式法
   if (selectedAlg == algorithms[0]) {
-//    alert('公式法');
     var alg = solver.solve(new State(cube.getState()))
     var opt = algorithm.optimize(alg)
 
@@ -181,8 +181,33 @@ function solve (selectedAlg) {
     }
   }
 
+  // DeepCubeA
   else if (selectedAlg == algorithms[1]) {
-//    alert('最短路径法');
+    $.ajax({
+      type: "POST",
+      url:"/solve_cube/",
+      data: {
+        state_str: cube.getState(),
+        method_type: 1,
+      },
+      dateType:"json",
+      async: true,
+      success: function(data) {
+        if (data.code == '1') {
+          controls.steps = opt
+          console.log('Algorithm:', alg)
+          if (controls.isAnimationAuto) {
+            cube.algorithm(opt)
+          }
+        }
+        else{
+          swal({
+            text: data.message,
+            type: "error"
+          });
+        }
+      }
+    });
   }
   else alert('Error Algorithm!');
 }

@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "expose-loader": "^0.7.5",
+    "sweetalert": "^2.1.2",
     "worker-loader": "^0.7.1"
   },
   "devDependencies": {
