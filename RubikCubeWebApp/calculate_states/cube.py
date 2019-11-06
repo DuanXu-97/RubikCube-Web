@@ -1,10 +1,9 @@
-from block import Block
+from .block import Block
+from .enums import Faces, Colors
+from .rules import RULES
+
 
 # 魔方类
-from enums import Faces, Colors
-from rules import RULES
-
-
 class Cube:
     def __init__(self, state):
         self.faces = []
@@ -14,7 +13,7 @@ class Cube:
 
         self.__set_corner_neighbors()
         self.__set_edge_neighbors()
-        self.__solve_indices()
+        self.states = self.__solve_indices()
 
     # 设置上下两个面，每个面各角块的邻块，每个角块各两个邻块
     def __set_corner_neighbors(self):
@@ -70,8 +69,10 @@ class Cube:
         self.faces[5].blocks[5].neighbors.append(self.faces[Faces.Right.value].blocks[3])
         self.faces[5].blocks[7].neighbors.append(self.faces[Faces.Down.value].blocks[1])
 
-    # 根据规则推断每个色块的编码
+    # 根据规则推断每个色块的编码，并得到状态数组
     def __solve_indices(self):
+        ret = []
+
         for i in range(6):
             for j in range(9):
                 b = self.faces[i].blocks[j]
@@ -79,7 +80,6 @@ class Cube:
                     lst = [b.color.name]
                     for x in b.neighbors:
                         lst.append(x.color.name)
-
                     for rule in RULES:
                         if set(lst) == set(rule.keys()):
                             b.index = rule.get(b.color.name)
@@ -87,12 +87,30 @@ class Cube:
                                 x.index = rule.get(x.color.name)
                             break
 
-    # 返回一个长度为54的列表，作为神经网络的输入
-    def get_states(self):
-        ret = []
         for i in range(6):
             ret.extend(self.faces[i].get_states())
         return ret
+
+    # 检查计算得到的状态数组是否合法
+    def __check_states_are_valid(self):
+        ret = True
+        lst = [1 for i in range(54)]
+        for i in self.states:
+            if 0 <= i < 54:
+                lst[i] -= 1
+            else:
+                ret = False
+                break
+        if sum(lst) != 0:
+            ret = False
+        return ret
+
+    # 返回一个长度为54的列表，作为神经网络的输入
+    def get_states(self):
+        if self.__check_states_are_valid():
+            return self.states
+        else:
+            return None
 
     # 打印魔方各面的颜色，用于调试
     def display(self):
