@@ -1,8 +1,12 @@
 import unittest
-from .main import calculate_states
-
+from .main import calculate_states, simple_check_input
 
 class CubeTestCase(unittest.TestCase):
+    def test_simple_check_input(self):
+        input_str = 'LLLLLFFFFFFFFFRRRRRRRRRBB'
+        expect = False
+        self.assertEqual(simple_check_input(input_str), expect)
+
     """
     测试方法：
     在 http://deepcube.igb.uci.edu/ 中打乱一个魔方，

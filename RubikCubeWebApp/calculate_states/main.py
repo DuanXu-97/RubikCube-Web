@@ -1,5 +1,5 @@
-from .cube import Cube
-from .enums import Colors, Moves
+from RubikCubeWebApp.calculate_states.cube import Cube
+from RubikCubeWebApp.calculate_states.enums import Colors, Moves
 
 
 def reorder(s):
@@ -15,20 +15,38 @@ def reorder(s):
     return up + down + left + right + back + front
 
 
+def simple_check_input(s):
+    """
+    初步简单检查输入是否合法，首先判断输入长度是否为9x6=54，
+    然后通过统计U,L,F,R,B,D六个字母出现次数是否都为9
+
+    :param s: 表示三阶魔方六个面状态的字符串
+    :return: True表示输入基本合法，False表示不合法
+    """
+    ret = True
+    if len(s) != 54:
+        ret = False
+    else:
+        lst = [9, 9, 9, 9, 9, 9]
+        for i in s:
+            lst[Moves[i].value] -= 1
+        if sum(lst) != 0:
+            ret = False
+    return ret
+
+
 def calculate_states(s):
     """
-    给定三阶魔方各面的颜色情况，计算出各色块的编号
+    给定三阶魔方各面的颜色情况，计算出各色块的编号，并返回
 
-    :param s: 从 http://159.226.5.97:9006/ 获得的表示各面颜色字符串
-    :return: 长度为54的列表，作为神经网络的输入
+    :param s: 从前端获得的表示各面颜色的字符串
+    :return: 长度为54的列表，作为神经网络的输入；若输入有误则返回None
     """
-    state = []
-    for ch in reorder(s):
-        state.append(Colors(Moves[ch].value))
-    cube = Cube(state)
-    return cube.get_states()
-
-
-if __name__ == '__main__':
-    s = 'UUUUUUUUULLLLLLLLLFFFFFFFFFRRRRRRRRRBBBBBBBBBDDDDDDDDD'
-    print(calculate_states(reorder(s)))
+    ret = None
+    if simple_check_input(s):
+        state = []
+        for ch in reorder(s):
+            state.append(Colors(Moves[ch].value))
+        cube = Cube(state)
+        ret = cube.get_states()
+    return ret
