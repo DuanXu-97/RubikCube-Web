@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
-from .calculate_states import main
+from .calculate_states.main import calculate_states
 import logging
 import json
 
@@ -23,5 +23,20 @@ class SolveCubeView(View):
         state_str = request.POST.get('state_str')
         method_type = request.POST.get('method_type')
 
-        return HttpResponse('{"code": -1, "message":"魔方状态不合法"}', content_type='application/json')
+        # DeepCubeA
+        if method_type == 1:
+            id_seq = calculate_states(state_str)
+            if id_seq is None:
+                return HttpResponse('{"code": -1, "message":"魔方状态不合法"}', content_type='application/json')
+
+
+        # 公式法
+        elif method_type == 0:
+            pass
+
+        else:
+            return HttpResponse('{"code": -1, "message":"方法不存在"}', content_type='application/json')
+
+
+
 
