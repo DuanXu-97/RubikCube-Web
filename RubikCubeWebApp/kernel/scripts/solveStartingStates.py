@@ -1,10 +1,8 @@
 import os
 import sys
 import time
-from .config import Config
-
-sys.path.append('./')
-
+sys.path.append('../')
+from config import Config
 import gc
 
 def deleteIfExists(filename):
@@ -26,16 +24,13 @@ def runMethods(state, args=Config()):
     :param args: some configs of model
     :return:
     """
-    from ..environments.cube_interactive_simple import Cube
+    from environments.cube_interactive_simple import Cube
     Environment = Cube(N=3, moveType="qtm")
-
-    from ..solvers.cube3.solver_algs import Kociemba
-    from ..solvers.cube3.solver_algs import Optimal
 
     useGPU = bool(args.use_gpu)
 
-    from ..ml_utils import nnet_utils
-    from ..ml_utils import search_utils
+    from ml_utils import nnet_utils
+    from ml_utils import search_utils
 
     def heuristicFn_nnet(x):
         gpuNum = 0

@@ -9,7 +9,7 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 from matplotlib import widgets
-from .projection import Quaternion, project_points
+from projection import Quaternion, project_points
 from random import choice
 
 
@@ -19,7 +19,7 @@ import sys
 import time
 
 sys.path.append('./solvers/cube3/')
-from ..solvers.cube3.solver_algs import Kociemba
+from solver_algs import Kociemba
 
 import argparse
 
