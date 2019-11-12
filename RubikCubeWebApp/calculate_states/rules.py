@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # 角块判定规则，共8条
 CORNER_RULES = [
     {'White': 0, 'Green': 47, 'Orange': 26},
