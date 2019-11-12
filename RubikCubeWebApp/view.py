@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
 from .calculate_states.main import calculate_states
+from .kernel.scripts.solveStartingStates import runMethods as deepcubea
 import logging
 import json
 
@@ -29,6 +30,12 @@ class SolveCubeView(View):
             if id_seq is None:
                 return HttpResponse('{"code": -1, "message":"魔方状态不合法"}', content_type='application/json')
 
+            try:
+                soln, _, _ = deepcubea(id_seq)
+            except AssertionError:
+                return HttpResponse('{"code": -1, "message":"解法不合法"}', content_type='application/json')
+
+            return HttpResponse('{"code": 1, "message":"成功"}. "moves":"' + soln + '"', content_type='application/json')
 
         # 公式法
         elif method_type == 0:

@@ -547,3 +547,4 @@ def solve(cubes,heuristicFn,Environment,maxTurns=50,searchDepth=1,numRollouts=10
 
     return isSolved, solveSteps
 
+

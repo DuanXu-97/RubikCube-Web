@@ -19,7 +19,7 @@ import sys
 import time
 
 sys.path.append('./solvers/cube3/')
-from solver_algs import Kociemba
+from ..solvers.cube3.solver_algs import Kociemba
 
 import argparse
 
