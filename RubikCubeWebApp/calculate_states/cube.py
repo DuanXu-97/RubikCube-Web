@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .block import Block
 from .enums import Faces, Colors
 from .rules import RULES
@@ -123,7 +124,7 @@ class Cube:
     def display(self):
         """打印魔方各面的颜色，用于调试"""
         for i in range(6):
-            print(Colors(i).name, end=': ')
+            # print(Colors(i).name, end=': ')
             self.faces[i].display()
 
 
@@ -139,11 +140,11 @@ class CubeFace:
         # 设置当前面的中心块
         self.blocks[4].set_center_block()
 
-    def display(self):
-        """打印当前面所有色块的颜色"""
-        for b in self.blocks:
-            print(b.color, end='\t')
-        print()
+    # def display(self):
+    #     """打印当前面所有色块的颜色"""
+    #     for b in self.blocks:
+    #         print(b.color, end='\t')
+    #     print()
 
     def get_states(self):
         """返回长度为9的列表，包含当前面各色块的编号"""

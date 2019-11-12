@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from RubikCubeWebApp.calculate_states.cube import Cube
 from RubikCubeWebApp.calculate_states.enums import Colors, Moves
 

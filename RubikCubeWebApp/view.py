@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
@@ -37,7 +38,7 @@ class SolveCubeView(View):
 
             return HttpResponse('{"code": 1, "message":"成功"}. "moves":"' + soln + '"', content_type='application/json')
 
-        # 公式法
+        # Formula
         elif method_type == 0:
             pass
 
