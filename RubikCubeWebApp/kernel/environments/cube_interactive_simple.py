@@ -9,7 +9,7 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 from matplotlib import widgets
-from projection import Quaternion, project_points
+from .projection import Quaternion, project_points
 from random import choice
 
 
