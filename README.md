@@ -45,6 +45,8 @@ The kernel of RubikCube-Web to solve the rubik's cube is similar to DeepCubeA<su
 
 [2] https://github.com/twinone/rubik-web
 
+[3] http://deepcube.igb.uci.edu/
+
 
 ## TODO
 - Learn the interfaces of https://github.com/twinone/rubik-web
