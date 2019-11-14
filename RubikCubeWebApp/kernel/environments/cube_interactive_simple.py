@@ -284,6 +284,7 @@ class Cube:
 
     def next_state(self,colors, move, layer=0):
         """Rotate Face"""
+        colors = np.array(colors)
         colorsNew = colors.copy()
 
         if type(move[0]) == type(list()):

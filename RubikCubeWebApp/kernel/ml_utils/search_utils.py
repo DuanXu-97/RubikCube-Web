@@ -223,7 +223,6 @@ class Tree(object):
             computeValueTime = time.time() - startTime
             heapPushTime = time.time() - startTime
 
-
         if verbose:
             print("TIMES - Next state: %.3f, children data proc: %.3f, check seen: %.3f, val comp: %.3f, heappush: %.3f" % (nextStateTime,childrenInfoTime,checkSeenTime,computeValueTime,heapPushTime))
             print("%i Children, %i Added" % (numChildren,len(addToQueue_idxs)))

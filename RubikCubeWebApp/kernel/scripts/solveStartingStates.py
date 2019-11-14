@@ -54,6 +54,8 @@ def runMethods(state, args=Config()):
     nodesGenerated_num = nodesGenerated_num[0]
     elapsedTime = time.time() - start_time
 
+    print(soln)
+
     assert (validSoln(state, soln, Environment))
 
     refined_soln_str = refineSoln(soln)
