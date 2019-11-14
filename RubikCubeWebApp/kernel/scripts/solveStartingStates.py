@@ -32,9 +32,10 @@ def runMethods(state, args=Config()):
     from ml_utils import nnet_utils
     from ml_utils import search_utils
 
+    gpuNum = 0
+    nnet = nnet_utils.loadNnet(args.model_loc, args.model_name, useGPU, Environment, gpuNum=gpuNum)
+
     def heuristicFn_nnet(x):
-        gpuNum = 0
-        nnet = nnet_utils.loadNnet(args.model_loc, args.model_name, useGPU, Environment, gpuNum=gpuNum)
         nnetResult = nnet(x)
         return nnetResult
 
