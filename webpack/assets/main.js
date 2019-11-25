@@ -90,7 +90,7 @@ var controls = {
   move: function () {},
 }
 
-var algorithms = ['公式法', '最短路径法'];
+var algorithms = ['公式法', 'DeepCubeA'];
 
 function initGui () {
   var c = folder('操作')
@@ -206,6 +206,7 @@ function solve (selectedAlg) {
             text: data.message,
             type: "info",
           }).then(function() {
+              controls.algorithm = algorithms[0]
               var alg = solver.solve(new State(cube.getState()))
               var opt = algorithm.optimize(alg)
 

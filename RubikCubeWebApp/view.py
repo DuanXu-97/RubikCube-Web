@@ -47,7 +47,7 @@ class SolveCubeView(View):
 
             is_solvable = False
             for state in deepcubea_states:
-                if id_seq == state:
+                if id_seq == state.tolist():
                     is_solvable = True
             if is_solvable is False:
                 return HttpResponse('{"code": 2, "message":"该状态搜索时间较长，已转为公式法"}', content_type='application/json')
