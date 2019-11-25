@@ -1,10 +1,10 @@
 import os
 import time
 import gc
+import sys
 try:
     from RubikCubeWebApp.kernel.scripts.config import Config
 except ImportError:
-    import sys
     sys.path.append('./')
     from config import Config
 
