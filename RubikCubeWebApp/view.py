@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import sys
 sys.path.append('./')
-
+import os
+from .settings import BASE_DIR
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
@@ -22,8 +23,9 @@ except:
 #                     filename="/var/www/RubikCubeWebApp/log.log",
 #                     filemode='w')
 
-inputData = pickle.load(open("./kernel/states", "rb"))
-deepcubea_states = inputData['states']
+with open(os.path.join(BASE_DIR, 'RubikCubeWebApp/kernel/states.pkl'), "rb") as f:
+    inputData = pickle.load(f)
+    deepcubea_states = inputData['states']
 
 
 class IndexView(View):
