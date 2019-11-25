@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
-import sys
-sys.path.append('./')
+try:
+    from RubikCubeWebApp.kernel.scripts.solveStartingStates import *
+except ImportError:
+    import sys
+    sys.path.append('./')
+    from solveStartingStates import *
 
-from solveStartingStates import *
 
 '''
 state[1]:网站上有的状态，但搜索不出来

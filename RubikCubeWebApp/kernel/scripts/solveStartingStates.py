@@ -1,7 +1,13 @@
 import os
 import time
-from RubikCubeWebApp.kernel.scripts.config import Config
 import gc
+try:
+    from RubikCubeWebApp.kernel.scripts.config import Config
+except ImportError:
+    import sys
+    sys.path.append('./')
+    from config import Config
+
 
 
 def deleteIfExists(filename):
