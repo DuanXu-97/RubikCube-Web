@@ -100,7 +100,7 @@ function initGui () {
     .onChange(function () { cube.scramble(); })
   c.add(controls, 'solve').name('解魔方')
     .onChange(function () { solve(controls.algorithm); })
-  c.add(controls, 'algorithm', algorithms).setValue(algorithms[0]).name('算法')
+  c.add(controls, 'algorithm', algorithms).setValue(algorithms[0]).name('算法').listen()
 
   var v = folder('视角')
   v.add(controls, 'labels').name('显示方位标记').listen()
