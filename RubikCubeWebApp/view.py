@@ -45,7 +45,11 @@ class SolveCubeView(View):
             if id_seq is None:
                 return HttpResponse('{"code": -1, "message":"魔方状态不合法"}', content_type='application/json')
 
-            if id_seq not in deepcubea_states:
+            is_solvable = False
+            for state in deepcubea_states:
+                if id_seq == state:
+                    is_solvable = True
+            if is_solvable is False:
                 return HttpResponse('{"code": 2, "message":"该状态搜索时间较长，已转为公式法"}', content_type='application/json')
 
             try:
