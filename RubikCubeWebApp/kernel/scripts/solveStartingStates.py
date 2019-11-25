@@ -1,13 +1,13 @@
 import os
-import sys
 import time
-sys.path.append('../')
-from config import Config
+from RubikCubeWebApp.kernel.scripts.config import Config
 import gc
+
 
 def deleteIfExists(filename):
     if os.path.exists(filename):
         os.remove(filename)
+
 
 def validSoln(state,soln,Environment):
     solnState = state

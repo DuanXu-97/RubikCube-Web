@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import sys
+sys.path.append('./')
+
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
@@ -7,11 +10,20 @@ from .kernel.scripts.solveStartingStates import runMethods as deepcubea
 import logging
 import json
 
+try:
+    import cPickle as pickle
+except:
+    import pickle
+
+
 # logging.basicConfig(level=logging.DEBUG,
 #                     format='%(asctime)s  %(filename)s : %(levelname)s  %(message)s',
 #                     datefmt='%a, %d %b %Y %H:%M:%S',
 #                     filename="/var/www/RubikCubeWebApp/log.log",
 #                     filemode='w')
+
+inputData = pickle.load(open("./kernel/states", "rb"))
+deepcubea_states = inputData['states']
 
 
 class IndexView(View):
@@ -31,12 +43,15 @@ class SolveCubeView(View):
             if id_seq is None:
                 return HttpResponse('{"code": -1, "message":"魔方状态不合法"}', content_type='application/json')
 
+            if id_seq not in deepcubea_states:
+                return HttpResponse('{"code": 2, "message":"该状态搜索时间较长，已转为公式法"}', content_type='application/json')
+
             try:
                 soln, _, _ = deepcubea(id_seq)
             except AssertionError:
                 return HttpResponse('{"code": -1, "message":"解法不合法"}', content_type='application/json')
 
-            return HttpResponse('{"code": 1, "message":"成功"}. "moves":"' + soln + '"', content_type='application/json')
+            return HttpResponse('{"code": 1, "message":"成功", "moves":"' + soln + '"}', content_type='application/json')
 
         # Formula
         elif method_type == 0:

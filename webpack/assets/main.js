@@ -194,11 +194,28 @@ function solve (selectedAlg) {
       async: true,
       success: function(data) {
         if (data.code == '1') {
+          opt = data.moves
           controls.steps = opt
           console.log('Algorithm:', alg)
           if (controls.isAnimationAuto) {
             cube.algorithm(opt)
           }
+        }
+        else if (data.code == '2') {
+          swal({
+            text: data.message,
+            type: "info",
+          }).then(function() {
+              var alg = solver.solve(new State(cube.getState()))
+              var opt = algorithm.optimize(alg)
+
+              controls.steps = opt
+              console.log('Algorithm:', alg)
+
+              if (controls.isAnimationAuto) {
+                cube.algorithm(opt)
+              }
+            });
         }
         else{
           swal({
