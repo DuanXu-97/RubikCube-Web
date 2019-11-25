@@ -30,7 +30,12 @@ def runMethods(state, args=Config()):
     :param args: some configs of model
     :return:
     """
-    from environments.cube_interactive_simple import Cube
+    try:
+        from RubikCubeWebApp.kernel.environments.cube_interactive_simple import Cube
+    except ImportError:
+        sys.path.append('../')
+        from environments.cube_interactive_simple import Cube
+
     Environment = Cube(N=3, moveType="qtm")
 
     useGPU = bool(args.use_gpu)
