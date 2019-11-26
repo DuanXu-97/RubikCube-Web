@@ -183,23 +183,52 @@ function solve (selectedAlg) {
 
   // DeepCubeA
   else if (selectedAlg == algorithms[1]) {
+
     $.ajax({
       type: "POST",
-      url:"/solve_cube/",
+      url:"/is_fast_deepcubea/",
       data: {
         state_str: cube.getState(),
-        method_type: 1,
       },
       dateType:"json",
       async: true,
       success: function(data) {
         if (data.code == '1') {
-          opt = data.moves
-          controls.steps = opt
-          console.log('Algorithm:', alg)
-          if (controls.isAnimationAuto) {
-            cube.algorithm(opt)
-          }
+
+          swal({
+            title: "正在求解中...",
+            showConfirmButton: false,
+            showLoaderOnConfirm: true,
+            imageUrl: "/static/img/loading.gif",
+            showCancelButton: true,
+          });
+
+          $.ajax({
+              type: "POST",
+              url:"/solve_cube/",
+              data: {
+                state_str: data.id_seq,
+                method_type: 1,
+              },
+              dateType:"json",
+              async: true,
+              success: function(data) {
+                if (data.code == '1') {
+                  opt = data.moves
+                  controls.steps = opt
+                  console.log('Algorithm:', alg)
+                  if (controls.isAnimationAuto) {
+                    cube.algorithm(opt)
+                  }
+                }
+                else{
+                  swal({
+                    text: data.message,
+                    type: "error"
+                  });
+                }
+              }
+          });
         }
         else if (data.code == '2') {
           swal({
