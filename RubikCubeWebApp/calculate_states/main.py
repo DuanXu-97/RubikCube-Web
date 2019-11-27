@@ -51,3 +51,24 @@ def calculate_states(s):
         cube = Cube(state)
         ret = cube.get_states()
     return ret
+
+
+def convert_states_to_str(states):
+    """
+    给定三阶魔方的状态数组，以web的表示形式输出
+
+    :param states: 长度为54的列表
+    :return: 用 ULFRBD 等字符表示魔方各面状态的字符串
+    """
+    temp = []
+    for s in states:
+        temp.append(Moves(s // 9).name)
+    s = ''.join(temp)
+    up = s[0:9]
+    down = s[9:18]
+    left = s[18:27]
+    right = s[27:36]
+    # 反转表示背面的字符串
+    back = s[36:45][::-1]
+    front = s[45:54]
+    return up + left + front + right + back + down
