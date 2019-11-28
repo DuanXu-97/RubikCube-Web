@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
 import sys
 import io
+
+from RubikCubeWebApp.solver.model.formula import Formula
 from .cross import CrossSolver
 from .f2l import F2LSolver
 from .oll import OLLSolver
@@ -19,7 +22,7 @@ class CFOPSolver(object):
             sys.stdout = io.StringIO()
         if not self.cube.is_valid():
             raise ValueError("Invalid Cube.")
-        result = pycuber.Formula()
+        result = Formula()
         sys.stdout.write("Solver starts....")
 
         sys.stdout.write("\rSolving Cross ......")
