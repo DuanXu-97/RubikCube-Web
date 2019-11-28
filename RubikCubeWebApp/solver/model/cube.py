@@ -5,12 +5,10 @@ from functools import reduce
 from itertools import permutations
 
 
-class Square(object):
-    """Square(colour), implements a square (sticker) on a cube.
-    """
+class Square:
+    """色块类，三阶魔方每个面有九个色块"""
 
     def __init__(self, colour, parent=None, children=[]):
-        super(Square, self).__init__()
         if isinstance(colour, Square):
             colour = colour.colour
         if not isinstance(colour, str):
@@ -23,20 +21,6 @@ class Square(object):
         self.colour = colour
         self.parent = parent
         self.children = set(children)
-
-    def __repr__(self):
-        """
-        Print out two spaces with background colour.
-        """
-        return {
-                   "red": "\x1b[45m",
-                   "yellow": "\x1b[43m",
-                   "green": "\x1b[42m",
-                   "white": "\x1b[47m",
-                   "orange": "\x1b[41m",
-                   "blue": "\x1b[46m",
-                   "unknown": "\x1b[40m",
-               }[self.colour] + "  \x1b[49m"
 
     def __str__(self):
         """
@@ -81,42 +65,20 @@ class Square(object):
         }
         return hash(str(self)) + colour_to_hex[self.colour]
 
-    def copy(self):
-        """
-        Copy this Square.
-        """
-        return Square(self.colour)
 
-
-class Cubie(object):
-    """
-    Cubie(**kwargs), implements a cubie on the Cube.
-    ex: Cubie(U=Square("yellow"), F=Square("green"), L=Square("red"))
-    """
+class Cubie:
+    """小方块类，魔方中心块、角块和中心块的父类"""
 
     def __init__(self, parent=None, children=[], **kwargs):
-        super(Cubie, self).__init__()
         for kw in kwargs:
             if kw not in list("LUFDRB"):
-                raise ValueError(
-                    "Facings must be L U F D R B, not {0}."
-                        .format(kw),
-                )
+                raise ValueError("Facings must be L U F D R B, not {0}.".format(kw))
             elif isinstance(kwargs[kw], str):
                 kwargs[kw] = Square(kwargs[kw])
         self.facings = FrozenDict(kwargs)
         self.parent = parent
         self.children = set(children)
         self.location = "".join(kwargs)
-
-    def __repr__(self):
-        """
-        Print out "Cubie(U:\x1b[43m ...)"
-        """
-        return "{0}({1})".format(
-            self.__class__.__name__,
-            ", ".join("{0}: {1}".format(k, v) for k, v in self.facings.items())
-        )
 
     def __getitem__(self, face):
         """
@@ -209,9 +171,7 @@ class Cubie(object):
 
 
 class Centre(Cubie):
-    """
-    Centre(U=Square("yellow")) => Implements the "Centre Block" (has 1 sticker).
-    """
+    """中心块类，包含一个色块"""
 
     def __init__(self, parent=None, children=[], **kwargs):
         if len(kwargs) != 1:
@@ -226,9 +186,7 @@ class Centre(Cubie):
 
 
 class Edge(Cubie):
-    """
-    Edge(U=Square("yellow"), F=Square("green")) => Implements the "Edge Block" (has 2 stickers).
-    """
+    """边块类，包含两个色块"""
 
     def __init__(self, parent=None, children=[], **kwargs):
         if len(kwargs) != 2:
@@ -238,13 +196,7 @@ class Edge(Cubie):
 
 
 class Corner(Cubie):
-    """
-    Corner(
-        U=Square("yellow"), 
-        F=Square("green"), 
-        R=Square("orange"), 
-        ) => Implements the "Corner Block" (has 3 stickers).
-    """
+    """角块类，包含三个色块"""
 
     def __init__(self, parent=None, children=[], **kwargs):
         if len(kwargs) != 3:
@@ -253,18 +205,17 @@ class Corner(Cubie):
         self.type = "corner"
 
 
-class Cube(object):
-    """
-    Cube([, {a set of Cubies}]) => Implements a Rubik's Cube.
-    """
+class Cube:
+    """魔方类，包含若干cubie"""
 
     def __init__(self, cubies=None):
-        super(Cube, self).__init__()
         self.parent = None
         self.children = set()
         if not cubies:
+            # 若没有指定cubies，则将魔方置为还原状态
             cubies = set()
-            colours = {"L": "red", "U": "yellow", "F": "green", "D": "white", "R": "orange", "B": "blue"}
+            colours = {"L": "orange", "U": "white", "F": "green", "D": "yellow", "R": "red", "B": "blue"}
+            # init colours = {"L": "red", "U": "yellow", "F": "green", "D": "white", "R": "orange", "B": "blue"}
             for loc in [
                 "LDB", "LDF", "LUB", "LUF", "RDB", "RDF", "RUB", "RUF",
                 "LB", "LF", "LU", "LD", "DB", "DF", "UB", "UF", "RB", "RF", "RU", "RD",
@@ -276,6 +227,7 @@ class Cube(object):
                     cubies.add(Edge(**{loc[i]: Square(colours[loc[i]]) for i in range(2)}))
                 else:
                     cubies.add(Centre(**{loc[0]: Square(colours[loc[0]])}))
+
         cubies = set(cubies)
         if isinstance(cubies, set):
             for cubie in cubies:
@@ -292,52 +244,6 @@ class Cube(object):
                     self.children.add(child_class(parent=self, children=children, **cubie.facings))
                 else:
                     raise ValueError("Should use Cubie, not {0}.".format(cubie.__class__.__name__))
-
-    def __repr__(self):
-        """
-        Draw the Cube as expanded view.
-        """
-        result = ""
-        _ = {
-            "L": self.L,
-            "U": self.U,
-            "F": self.F,
-            "D": self.D,
-            "R": self.R,
-            "B": self.B,
-        }
-        for i in range(3):
-            result += "      " + "".join(repr(square) for square in _["U"][i]) + "\n"
-        for i in range(3):
-            for side in "LFRB":
-                result += "".join(repr(square) for square in _[side][i])
-            result += "\n"
-        for i in range(3):
-            result += "      " + "".join(repr(square) for square in _["D"][i]) + "\n"
-        return result
-
-    def __str__(self):
-        """
-        Draw the Cube as expanded view using string representation of color.
-        """
-        result = ""
-        _ = {
-            "L": self.L,
-            "U": self.U,
-            "F": self.F,
-            "D": self.D,
-            "R": self.R,
-            "B": self.B,
-        }
-        for i in range(3):
-            result += "         " + "".join(str(square) for square in _["U"][i]) + "\n"
-        for i in range(3):
-            for side in "LFRB":
-                result += "".join(str(square) for square in _[side][i])
-            result += "\n"
-        for i in range(3):
-            result += "         " + "".join(str(square) for square in _["D"][i]) + "\n"
-        return result
 
     def __getitem__(self, key):
         """
@@ -541,7 +447,7 @@ class Cube(object):
                 step_ = step_.inverse()
             elif step.is_180:
                 step_ = step_ * 2
-            _single_layer(self, step_)
+            self._single_layer(step_)
         return self
 
     _other_rotations.__globals__["_single_layer"] = _single_layer
@@ -557,9 +463,9 @@ class Cube(object):
         """
         step = Step(step)
         if step.face in "LUFDRBMES":
-            return _single_layer(self, step)
+            return self._single_layer(step)
         else:
-            return _other_rotations(self, step)
+            return self._other_rotations(step)
 
     perform_step.__globals__["_single_layer"] = _single_layer
     perform_step.__globals__["_other_rotations"] = _other_rotations
