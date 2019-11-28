@@ -4,19 +4,6 @@ from RubikCubeWebApp.calculate_states.cube_string import CubeString
 from RubikCubeWebApp.calculate_states.enums import Colors, Moves
 
 
-def reorder(s):
-    """
-    将当前web所给的 ULFRBD 顺序转换为 UDLRBF 顺序
-    """
-    up = s[0:9]
-    left = s[9:18]
-    front = s[18:27]
-    right = s[27:36]
-    back = s[36:45]
-    down = s[45:54]
-    return up + down + left + right + back + front
-
-
 def simple_check_input(s):
     """
     初步简单检查输入是否合法，首先判断输入长度是否为9x6=54，
@@ -47,7 +34,9 @@ def calculate_states(s):
     ret = None
     if simple_check_input(s):
         state = []
-        for ch in reorder(s):
+        # 将web所给的 ULFRBD 顺序转换为 UDLRBF 顺序
+        string = CubeString(s, ordering='ULFRBD').reorder(ordering='UDLRBF')
+        for ch in string:
             state.append(Colors(Moves[ch].value))
         cube = Cube(state)
         ret = cube.get_states()
@@ -73,6 +62,7 @@ def convert_states_to_str(states):
     back = s[36:45][::-1]
     front = s[45:54]
     return up + left + front + right + back + down
+
 
 if __name__ == '__main__':
     # s = convert_states_to_str(
