@@ -1,9 +1,13 @@
+# -*- coding: utf-8 -*-
+
 """
 Module for solving Rubik's Cube OLL.
 """
 
 import csv, os
-from pycuber import *
+
+from RubikCubeWebApp.solver.model.cube import Square, Cube
+from RubikCubeWebApp.solver.model.formula import Formula, Step
 
 with open(os.path.join(os.path.dirname(__file__), "oll_algos.csv"), "r") as f:
     reader = csv.reader(f, delimiter=",")
@@ -11,13 +15,15 @@ with open(os.path.join(os.path.dirname(__file__), "oll_algos.csv"), "r") as f:
     for line in reader:
         algo_dict[line[1]] = Formula(line[2])
         for i in range(1, 4):
-            algo_dict[line[1][-3*i:] + line[1][:-3*i]] = Formula(line[2]).insert(0, Step("U") * i)
+            algo_dict[line[1][-3 * i:] + line[1][:-3 * i]] = Formula(line[2]).insert(0, Step("U") * i)
     algo_dict["000000000000"] = Formula()
+
 
 class OLLSolver(object):
     """
     OLLSolver() => An OLL solver.
     """
+
     def __init__(self, cube=None):
         self.cube = cube
 
@@ -38,7 +44,8 @@ class OLLSolver(object):
             for square in self.cube.get_face(face)[0]:
                 result += str(int(square == self.cube["U"]["U"]))
         if result not in algo_dict:
-            raise ValueError("Invalid Cube, probably didn't solve F2L, or wrong input value.\nUse Solver.feed(cube) to reset the cube.")
+            raise ValueError(
+                "Invalid Cube, probably didn't solve F2L, or wrong input value.\nUse Solver.feed(cube) to reset the cube.")
         self.case = result
         return result
 
@@ -57,4 +64,3 @@ class OLLSolver(object):
         Check if Cube is solved.
         """
         return self.cube.U == [[Square(self.cube["U"].colour)] * 3] * 3
-

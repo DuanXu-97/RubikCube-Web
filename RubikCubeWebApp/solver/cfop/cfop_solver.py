@@ -2,11 +2,12 @@
 import sys
 import io
 
+from RubikCubeWebApp.solver.model.cube import Cube
 from RubikCubeWebApp.solver.model.formula import Formula
-from .cross import CrossSolver
-from .f2l import F2LSolver
-from .oll import OLLSolver
-from .pll import PLLSolver
+from RubikCubeWebApp.solver.cfop.cross import CrossSolver
+from RubikCubeWebApp.solver.cfop.f2l import F2LSolver
+from RubikCubeWebApp.solver.cfop.oll import OLLSolver
+from RubikCubeWebApp.solver.cfop.pll import PLLSolver
 
 
 class CFOPSolver(object):
@@ -54,3 +55,13 @@ class CFOPSolver(object):
         if suppress_progress_messages:
             sys.stdout = save_stdout
         return result
+
+
+if __name__ == '__main__':
+    c = Cube()
+    alg = Formula()
+    random_alg = alg.random()
+    c(random_alg)
+    solver = CFOPSolver(c)
+    solution = solver.solve(suppress_progress_messages=True)
+    print(solution)

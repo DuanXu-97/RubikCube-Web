@@ -1,9 +1,12 @@
+# -*- coding: utf-8 -*-
+
 """
 
 Utility functions.
 Most are path searching functions.
 
 """
+
 
 def shortest_path_search(start, successors, is_goal):
     """
@@ -12,8 +15,8 @@ def shortest_path_search(start, successors, is_goal):
     """
     if is_goal(start):
         return [start]
-    explored = [] # set of states we have visited
-    frontier = [ [start] ] # ordered list of paths we have blazed
+    explored = []  # set of states we have visited
+    frontier = [[start]]  # ordered list of paths we have blazed
     while frontier:
         path = frontier.pop(0)
         s = path[-1]
@@ -26,6 +29,7 @@ def shortest_path_search(start, successors, is_goal):
                 else:
                     frontier.append(path2)
     return []
+
 
 def a_star_search(start, successors, state_value, is_goal):
     """
@@ -53,14 +57,15 @@ def a_star_search(start, successors, state_value, is_goal):
                     return path2
                 else:
                     frontier.append((f2, g2, h2, path2))
-                    frontier.sort(key=lambda x:x[:3])
+                    frontier.sort(key=lambda x: x[:3])
     return []
+
 
 def path_states(path):
     "Return a list of states in this path."
     return path[0::2]
-    
+
+
 def path_actions(path):
     "Return a list of actions in this path."
     return path[1::2]
-
