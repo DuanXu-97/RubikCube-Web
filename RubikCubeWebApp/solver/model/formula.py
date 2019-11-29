@@ -193,7 +193,6 @@ class Formula(list):
     def __repr__(self):
         """
         Representing a Formula object, just print out every move
-        R U R' U'
         """
         return " ".join(map(lambda x: x.name, self))
 
@@ -201,7 +200,6 @@ class Formula(list):
         """
         Get ith item of Formula.
 
-        U
         """
         result = super(Formula, self).__getitem__(index)
         if isinstance(index, slice):
@@ -212,9 +210,6 @@ class Formula(list):
         """
         Set ith item of Formula.
 
-        L U R' U'
-
-        R' U R' U'
         """
         if None is item:
             del self[index]

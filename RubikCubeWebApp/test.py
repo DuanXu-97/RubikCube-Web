@@ -59,13 +59,12 @@ def get_si_by_sf_in_pkl(sf):
 def cfop_test():
     state_str = 'LLLBUUUBBDRFRLFBFBRDRUFRRUFDLDDRBRLLFDBLBFUULUBDDDFURF'
     solver = CFOPSolver(state_str)
-    moves = solver.solve()
-    return moves
+    # moves = solver.solve()
+    # return moves
 
 
 if __name__ == '__main__':
-    moves = cfop_test()
-    print(moves)
+    cfop_test()
 
 
 
