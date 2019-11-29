@@ -175,18 +175,20 @@ class Formula(list):
     def __init__(self, sequence=[]):
         if type(sequence) == str:
             sequence = sequence.split()
-            # print(sequence)
-            # print(type(sequence))
+            print(sequence)
+            print(type(sequence))
         elif isinstance(sequence, Step):
             sequence = [sequence]
         new_sequence = list()
         for i in range(len(sequence)):
-            # print(sequence[i])
-            # print(type(sequence[i]))
-            try:
-                new_sequence.append(Step(sequence[i].encode('utf-8')))
-            except Exception:
-                continue
+            print(len(sequence))
+            print(sequence[i])
+            print(type(sequence[i]))
+
+            # try:
+            new_sequence.append(Step(sequence[i].encode('utf-8')))
+            # except Exception:
+            #     continue
         sequence = new_sequence
         super(Formula, self).__init__(sequence)
 
