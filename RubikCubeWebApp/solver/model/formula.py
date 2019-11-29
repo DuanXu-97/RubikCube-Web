@@ -94,6 +94,7 @@ class Step(object):
         >>> s = Step("W'")
         ValueError: Invalid action name.
         """
+
         if isinstance(name, Step):
             name = name.name
         try:
@@ -305,58 +306,6 @@ class Step(object):
 
 
 class Formula(list):
-    """
-    Representing a Rubik's Cube formula.
-
-    >>> a = Formula("R U R' U'")
-    >>> a
-    R U R' U'
-
-    You can add two Formulae together:
-    >>> a + Formula("R' F R F'")
-    R U R' U' R' F R F'
-    >>> a + "F R' F' R"
-    R U R' U' F R' F' R
-
-    And also multiply by n times:
-    >>> a * 3
-    R U R' U' R U R' U' R U R' U'
-
-    ==, >, >=, <, <=, != are a little bit different
-    It only depends on the length
-    >>> a
-    R U R' U'
-    >>> a == Formula("R' F R F'")
-    True
-    >>> a < Formula("R U R'")
-    False
-
-    If you want to check if two Formulae are fully same, use |
-    >>> a | Formula("R U R' U'")
-    True
-    >>> a | Formula("R' F R F'")
-    False
-
-    You can reverse an Formula simply like this:
-    >>> a.reverse()
-    >>> a
-    U R U' R'
-
-    You can also mirror it!
-    >>> a.mirror()
-    >>> a
-    U' L' U L
-    >>> a.mirror("UD")
-    >>> a
-    D L D' L'
-
-    Also optimising - only outer layer Steps.
-    >>> a = Formula("R U r' x2 M' y' D D' L2 R L'")
-    >>> a.optimise()
-    >>> a
-    R U R' F B
-
-    """
 
     def __init__(self, sequence=[]):
         if type(sequence) == str:
