@@ -24,7 +24,7 @@ class CFOPSolver(object):
 
     def solve(self):
         """
-        CFOP公式法解魔方
+        CFOP公式法解魔方，平均耗时：15.9455s
 
         :return: 返回步骤字符串
         """
