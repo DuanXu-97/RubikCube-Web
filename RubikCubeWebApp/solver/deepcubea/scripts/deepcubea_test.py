@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
-from settings import BASE_DIR
-sys.path.append(BASE_DIR)
+sys.path.append('../../../../')
 from RubikCubeWebApp.solver.deepcubea.scripts.solveStartingStates import *
 
 '''
