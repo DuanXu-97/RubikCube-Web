@@ -173,13 +173,13 @@ class Step(object):
 class Formula(list):
 
     def __init__(self, sequence=[]):
-        sequence = sequence.encode('utf-8')
-        if type(sequence) == str:
+        if isinstance(sequence, Step):
+            sequence = [sequence]
+        else:
+            sequence = sequence.encode('utf-8')
             sequence = sequence.split()
             print(sequence)
             print(type(sequence))
-        elif isinstance(sequence, Step):
-            sequence = [sequence]
         new_sequence = list()
         for i in range(len(sequence)):
             print(len(sequence))
