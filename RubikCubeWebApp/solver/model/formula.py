@@ -173,6 +173,7 @@ class Step(object):
 class Formula(list):
 
     def __init__(self, sequence=[]):
+        sequence = sequence.encode('utf-8')
         if type(sequence) == str:
             sequence = sequence.split()
             print(sequence)
