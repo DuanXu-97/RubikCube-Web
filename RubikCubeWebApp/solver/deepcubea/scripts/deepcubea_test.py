@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
-try:
-    from RubikCubeWebApp.solver.deepcubea.scripts.solveStartingStates import *
-except ImportError:
-    import sys
-    sys.path.append('./')
-    from solveStartingStates import *
-
+import sys
+from settings import BASE_DIR
+sys.path.append(BASE_DIR)
+from RubikCubeWebApp.solver.deepcubea.scripts.solveStartingStates import *
 
 '''
 state[1]:网站上有的状态，但搜索不出来
