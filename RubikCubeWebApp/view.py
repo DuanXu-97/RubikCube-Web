@@ -23,7 +23,7 @@ except:
 #                     filename="/var/www/RubikCubeWebApp/log.log",
 #                     filemode='w')
 
-with open(os.path.join(BASE_DIR, 'RubikCubeWebApp/kernel/states.pkl'), "rb") as f:
+with open(os.path.join(BASE_DIR, 'RubikCubeWebApp/solver/deepcubea/states.pkl'), "rb") as f:
     inputData = pickle.load(f)
     deepcubea_states = inputData['states']
 
