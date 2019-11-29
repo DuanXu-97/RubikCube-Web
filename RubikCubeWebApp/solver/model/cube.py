@@ -5,12 +5,10 @@ from functools import reduce
 from itertools import permutations
 
 
-class Square(object):
-    """Square(colour), implements a square (sticker) on a cube.
-    """
+class Square:
+    """色块类，三阶魔方每个面有九个色块"""
 
     def __init__(self, colour, parent=None, children=[]):
-        super(Square, self).__init__()
         if isinstance(colour, Square):
             colour = colour.colour
         if not isinstance(colour, str):
@@ -23,20 +21,6 @@ class Square(object):
         self.colour = colour
         self.parent = parent
         self.children = set(children)
-
-    def __repr__(self):
-        """
-        Print out two spaces with background colour.
-        """
-        return {
-                   "red": "\x1b[45m",
-                   "yellow": "\x1b[43m",
-                   "green": "\x1b[42m",
-                   "white": "\x1b[47m",
-                   "orange": "\x1b[41m",
-                   "blue": "\x1b[46m",
-                   "unknown": "\x1b[40m",
-               }[self.colour] + "  \x1b[49m"
 
     def __str__(self):
         """
@@ -81,42 +65,20 @@ class Square(object):
         }
         return hash(str(self)) + colour_to_hex[self.colour]
 
-    def copy(self):
-        """
-        Copy this Square.
-        """
-        return Square(self.colour)
 
-
-class Cubie(object):
-    """
-    Cubie(**kwargs), implements a cubie on the Cube.
-    ex: Cubie(U=Square("yellow"), F=Square("green"), L=Square("red"))
-    """
+class Cubie:
+    """小方块类，魔方中心块、角块和中心块的父类"""
 
     def __init__(self, parent=None, children=[], **kwargs):
-        super(Cubie, self).__init__()
         for kw in kwargs:
             if kw not in list("LUFDRB"):
-                raise ValueError(
-                    "Facings must be L U F D R B, not {0}."
-                        .format(kw),
-                )
+                raise ValueError("Facings must be L U F D R B, not {0}.".format(kw))
             elif isinstance(kwargs[kw], str):
                 kwargs[kw] = Square(kwargs[kw])
         self.facings = FrozenDict(kwargs)
         self.parent = parent
         self.children = set(children)
         self.location = "".join(kwargs)
-
-    def __repr__(self):
-        """
-        Print out "Cubie(U:\x1b[43m ...)"
-        """
-        return "{0}({1})".format(
-            self.__class__.__name__,
-            ", ".join("{0}: {1}".format(k, v) for k, v in self.facings.items())
-        )
 
     def __getitem__(self, face):
         """
@@ -209,9 +171,7 @@ class Cubie(object):
 
 
 class Centre(Cubie):
-    """
-    Centre(U=Square("yellow")) => Implements the "Centre Block" (has 1 sticker).
-    """
+    """中心块类，包含一个色块"""
 
     def __init__(self, parent=None, children=[], **kwargs):
         if len(kwargs) != 1:
@@ -226,9 +186,7 @@ class Centre(Cubie):
 
 
 class Edge(Cubie):
-    """
-    Edge(U=Square("yellow"), F=Square("green")) => Implements the "Edge Block" (has 2 stickers).
-    """
+    """边块类，包含两个色块"""
 
     def __init__(self, parent=None, children=[], **kwargs):
         if len(kwargs) != 2:
@@ -238,13 +196,7 @@ class Edge(Cubie):
 
 
 class Corner(Cubie):
-    """
-    Corner(
-        U=Square("yellow"), 
-        F=Square("green"), 
-        R=Square("orange"), 
-        ) => Implements the "Corner Block" (has 3 stickers).
-    """
+    """角块类，包含三个色块"""
 
     def __init__(self, parent=None, children=[], **kwargs):
         if len(kwargs) != 3:
@@ -253,10 +205,8 @@ class Corner(Cubie):
         self.type = "corner"
 
 
-class Cube(object):
-    """
-    Cube([, {a set of Cubies}]) => Implements a Rubik's Cube.
-    """
+class Cube:
+    """魔方类，包含若干cubie"""
 
     def __init__(self, cubies=None):
         super(Cube, self).__init__()
@@ -264,7 +214,8 @@ class Cube(object):
         self.children = set()
         if not cubies:
             cubies = set()
-            colours = {"L": "red", "U": "yellow", "F": "green", "D": "white", "R": "orange", "B": "blue"}
+            colours = {"L": "orange", "U": "white", "F": "green", "D": "yellow", "R": "red", "B": "blue"}
+            # init colours = {"L": "red", "U": "yellow", "F": "green", "D": "white", "R": "orange", "B": "blue"}
             for loc in [
                 "LDB", "LDF", "LUB", "LUF", "RDB", "RDF", "RUB", "RUF",
                 "LB", "LF", "LU", "LD", "DB", "DF", "UB", "UF", "RB", "RF", "RU", "RD",

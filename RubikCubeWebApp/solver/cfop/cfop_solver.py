@@ -1,53 +1,43 @@
-import sys
-import io
-from .cross import CrossSolver
-from .f2l import F2LSolver
-from .oll import OLLSolver
-from .pll import PLLSolver
+# -*- coding: utf-8 -*-
+from RubikCubeWebApp.solver.kociemba.kociemba_solver import KociembaSolver
+from RubikCubeWebApp.solver.model.cube import Cube
+from RubikCubeWebApp.solver.model.formula import Formula
+from RubikCubeWebApp.solver.cfop.cross import CrossSolver
+from RubikCubeWebApp.solver.cfop.f2l import F2LSolver
+from RubikCubeWebApp.solver.cfop.oll import OLLSolver
+from RubikCubeWebApp.solver.cfop.pll import PLLSolver
 
 
 class CFOPSolver(object):
-    def __init__(self, cube=None):
-        self.cube = cube
+    """CFOP公式法求解三阶魔方"""
 
-    def feed(self, cube):
-        self.cube = cube
+    def __init__(self, string):
+        """
+        初始化魔方
 
-    def solve(self, suppress_progress_messages=False):
-        if suppress_progress_messages:
-            save_stdout = sys.stdout
-            sys.stdout = io.StringIO()
+        :param string: 传入前端表示当前魔方状态的字符串，顺序为 ULFRBD
+        """
+        # 利用Kociemba库，获得从还原状态到当前状态的操作
+        moves = Formula(KociembaSolver(string).get_moves_to_random_state())
+        # 执行上一步得到的操作，得到待解的魔方
+        self.cube = Cube().perform_algo(moves)
+
+    def solve(self):
+        """
+        CFOP公式法解魔方，平均耗时：15.9455s
+
+        :return: 返回步骤字符串
+        """
         if not self.cube.is_valid():
             raise ValueError("Invalid Cube.")
-        result = pycuber.Formula()
-        sys.stdout.write("Solver starts....")
 
-        sys.stdout.write("\rSolving Cross ......")
-        solver = CrossSolver(self.cube)
-        cross = solver.solve()
-        result += cross
-        sys.stdout.write("\x1b[2K\rCross: {0}\n".format(cross))
+        result = Formula()
+        result += CrossSolver(self.cube).solve()
 
         solver = F2LSolver(self.cube)
         for i, f2l_single in enumerate(solver.solve(), 1):
-            sys.stdout.write("Solving F2L#{0} ......".format(i))
             result += f2l_single[1]
-            sys.stdout.write("\x1b[2K\rF2L{0}: {1}\n".format(*f2l_single))
 
-        solver = OLLSolver(self.cube)
-        sys.stdout.write("Solving OLL ......")
-        oll = solver.solve()
-        result += oll
-        sys.stdout.write("\x1b[2K\rOLL:  {0}\n".format(oll))
-
-        solver = PLLSolver(self.cube)
-        sys.stdout.write("\rSolving PLL ......")
-        pll = solver.solve()
-        result += pll
-        sys.stdout.write("\x1b[2K\rPLL:  {0}\n".format(pll))
-
-        sys.stdout.write("\nFULL: {0}\n".format(result.optimise()))
-
-        if suppress_progress_messages:
-            sys.stdout = save_stdout
+        result += OLLSolver(self.cube).solve()
+        result += PLLSolver(self.cube).solve()
         return result

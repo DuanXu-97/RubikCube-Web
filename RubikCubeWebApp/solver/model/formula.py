@@ -23,14 +23,15 @@ Usage:
 
 """
 
+import random
+import sys
 from functools import wraps
-import sys, random
 
 
 class Step(object):
     """
     Representing a Rubik's Cube action.
-    
+
     >>> r = Step("R")
     >>> r
     R
@@ -216,7 +217,7 @@ class Step(object):
         >>> s * 10
         U2
         """
-        i %= 4
+        i = i % 4
         if i == 0:
             return None
         result = Step(self.name)
@@ -348,7 +349,7 @@ class Formula(list):
     >>> a.mirror("UD")
     >>> a
     D L D' L'
-    
+
     Also optimising - only outer layer Steps.
     >>> a = Formula("R U r' x2 M' y' D D' L2 R L'")
     >>> a.optimise()
@@ -496,7 +497,7 @@ class Formula(list):
     def __eq__(self, another):
         """
         Check if length of this Formula is equal to another.
-        
+
         >>> a = Formula("R U R' U'")
         >>> a == Formula("R' F R F'")
         True
@@ -760,7 +761,7 @@ class Formula(list):
         else:
             flag = True
             if self[0].face == self[2].face and opposite[self[0].face] == self[1].face:
-                if self[0] + self[2] is None:
+                if self[0] + self[2] == None:
                     self[0] += self[2]
                     del self[1]
                     if len(self) == 1:
@@ -770,7 +771,7 @@ class Formula(list):
                     self[0] += self[2]
                     del self[2]
             if self[0].face == self[1].face:
-                if self[0] + self[1] is None:
+                if self[0] + self[1] == None:
                     self[0] += self[1]
                     del self[0]
                     flag = False
@@ -826,8 +827,8 @@ class Formula(list):
             try:
                 while True:
                     if self[-1].face != self[-2].face and \
-                                    self[-1].face != self[-3].face and \
-                                    opposite[self[-1].face] != self[-2].face:
+                            self[-1].face != self[-3].face and \
+                            opposite[self[-1].face] != self[-2].face:
                         break
                     del self[-1]
                     self.append(random.choice("LUFDRB") + random.choice(["", "'", "2"]))

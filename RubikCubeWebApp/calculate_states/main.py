@@ -1,19 +1,7 @@
 # -*- coding: utf-8 -*-
 from RubikCubeWebApp.calculate_states.cube import Cube
+from RubikCubeWebApp.calculate_states.cube_string import CubeString
 from RubikCubeWebApp.calculate_states.enums import Colors, Moves
-
-
-def reorder(s):
-    """
-    将当前web所给的 ULFRBD 顺序转换为 UDLRBF 顺序
-    """
-    up = s[0:9]
-    left = s[9:18]
-    front = s[18:27]
-    right = s[27:36]
-    back = s[36:45]
-    down = s[45:54]
-    return up + down + left + right + back + front
 
 
 def simple_check_input(s):
@@ -46,7 +34,9 @@ def calculate_states(s):
     ret = None
     if simple_check_input(s):
         state = []
-        for ch in reorder(s):
+        # 将web所给的 ULFRBD 顺序转换为 UDLRBF 顺序
+        string = CubeString(s, ordering='ULFRBD').reorder(ordering='UDLRBF')
+        for ch in string:
             state.append(Colors(Moves[ch].value))
         cube = Cube(state)
         ret = cube.get_states()
@@ -72,3 +62,16 @@ def convert_states_to_str(states):
     back = s[36:45][::-1]
     front = s[45:54]
     return up + left + front + right + back + down
+
+
+if __name__ == '__main__':
+    # s = convert_states_to_str(
+    #     [29, 41, 36, 39, 4, 10, 27, 50, 45, 0, 52, 8, 1, 13, 14, 9, 46, 44, 53, 12, 51, 30, 22, 34, 18, 23, 47, 11, 21,
+    #      33, 43, 31, 32, 35, 48, 2, 42, 25, 20, 16, 40, 7, 6, 5, 15, 17, 3, 24, 37, 49, 19, 26, 28, 38])
+    # print(s)
+    s = 'UUUUUUUUULLLLLLLLLFFFFFFFFFRRRRRRRRRBBBBBBBBBDDDDDDDDD'
+    print(s)
+    cs = CubeString(s, ordering='ULFRBD').reorder(ordering='URFDLB')
+    print(cs)
+    # print(cs.reorder(ordering='UDLRBF'))
+    # print(cs.reorder(ordering='URFDLB'))

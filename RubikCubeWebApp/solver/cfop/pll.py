@@ -1,25 +1,31 @@
+# -*- coding: utf-8 -*-
+
 """
 Module for solving Rubik's Cube PLL.
 """
 
 import csv, os
-from pycuber import *
+
+from RubikCubeWebApp.solver.model.cube import Cube
+from RubikCubeWebApp.solver.model.formula import Formula, Step
 
 with open(os.path.join(os.path.dirname(__file__), "pll_algos.csv"), "r") as f:
     reader = csv.reader(f, delimiter=",")
     algo_dict = {}
     for name, rec_id, algo in reader:
         for i in range(4):
-            algo_dict[rec_id[-3*i:] + rec_id[:-3*i]] = Formula(algo).insert(0, Step("U") * i)
+            algo_dict[rec_id[-3 * i:] + rec_id[:-3 * i]] = Formula(algo).insert(0, Step("U") * i)
     rec_id = "LLLFFFRRRBBB"
     algo = []
     for i in range(4):
-        algo_dict[rec_id[-3*i:] + rec_id[:-3*i]] = Formula(algo).insert(0, Step("U") * i)
+        algo_dict[rec_id[-3 * i:] + rec_id[:-3 * i]] = Formula(algo).insert(0, Step("U") * i)
+
 
 class PLLSolver(object):
     """
     PLLSolver() => A PLL solver.
     """
+
     def __init__(self, cube=None):
         self.cube = cube
 
@@ -66,4 +72,3 @@ class PLLSolver(object):
                 if square != sample:
                     return False
         return True
-
