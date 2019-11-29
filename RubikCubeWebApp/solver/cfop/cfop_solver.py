@@ -30,14 +30,22 @@ class CFOPSolver(object):
         """
         if not self.cube.is_valid():
             raise ValueError("Invalid Cube.")
-
         result = Formula()
-        result += CrossSolver(self.cube).solve()
-
+        solver = CrossSolver(self.cube)
+        cross = solver.solve()
+        result += cross
         solver = F2LSolver(self.cube)
         for i, f2l_single in enumerate(solver.solve(), 1):
             result += f2l_single[1]
-
-        result += OLLSolver(self.cube).solve()
-        result += PLLSolver(self.cube).solve()
+        solver = OLLSolver(self.cube)
+        oll = solver.solve()
+        result += oll
+        solver = PLLSolver(self.cube)
+        pll = solver.solve()
+        result += pll
         return result
+
+
+if __name__ == '__main__':
+    s = 'LLLBUUUBBDRFRLFBFBRDRUFRRUFDLDDRBRLLFDBLBFUULUBDDDFURF'
+    print(CFOPSolver(s).solve())
