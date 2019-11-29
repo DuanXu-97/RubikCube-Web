@@ -130,14 +130,13 @@
 	  state: cube.getState(),
 	  alg: util.getQueryParameter('algorithm') || '',
 	  button: function () {}, // used for other buttons
-	  reset: function () {},
 	  algorithm: '',
 	  steps: '',
+	  movedSteps: '',
 	  isAnimationAuto: false, //whether run animation when click solve
-	  move: function () {},
 	}
 
-	var algorithms = ['公式法', 'DeepCubeA'];
+	var algorithms = ['层先法', 'CFOP', 'Kociemba', 'DeepCubeA'];
 
 	function initGui () {
 	  var v = folder('视角')
@@ -152,7 +151,7 @@
 	  st.add(controls, 'state').name('当前状态').listen()
 	  st.add(controls, 'button').name('修改状态')
 	    .onFinishChange(function () { cube.setState(controls.state); controls.steps = '';})
-	  st.add(controls, 'reset').name('重置状态')
+	  st.add(controls, 'button').name('重置状态')
 	    .onFinishChange(function () { cube.setState('UUUUUUUUULLLLLLLLLFFFFFFFFFRRRRRRRRRBBBBBBBBBDDDDDDDDD'); controls.steps = '';})
 
 	  var c = folder('魔方求解')
@@ -162,9 +161,16 @@
 	    .onChange(function () { solve(controls.algorithm); })
 
 	  var s = folder('求解结果')
-	  s.add(controls, 'steps').name('总步骤').listen()
-	  s.add(controls, 'move').name('执行当前步骤')
-	    .onFinishChange(function () { runCurrentStep(); })
+	  s.add(controls, 'steps').name('步骤').listen()
+	  s.add(controls, 'movedSteps').name('已执行步骤').listen()
+	  s.add(controls, 'button').name('单步执行')
+	    .onFinishChange(function () { moveSingleForward(); })
+	  s.add(controls, 'button').name('单步回退')
+	    .onFinishChange(function () { moveSingleBackward(); })
+	  s.add(controls, 'button').name('执行剩余步骤')
+	    .onFinishChange(function () { moveAllForward(); })
+	  s.add(controls, 'button').name('回退所有步骤')
+	    .onFinishChange(function () { moveAllBackward(); })
 
 	  if (window.innerWidth <= 500) gui.close()
 
@@ -183,10 +189,15 @@
 	  canvas.focus()
 	}
 
-	function runCurrentStep () {
+	function moveSingleForward () {
+	  // get current step
 	  var splitSteps = controls.steps.split(' ')
 	  var currentStep = splitSteps[0]
+
+	  // call API to run current step
 	  cube.algorithm(currentStep)
+
+	  //  update controls.steps
 	  var restSteps = ''
 	  for (var i = 1; i < splitSteps.length; i++) {
 	      if (i != splitSteps.length - 1){
@@ -197,7 +208,60 @@
 	      }
 	  }
 	  controls.steps = restSteps
+
+	  // update controls.movedSteps
+	  if (controls.movedSteps.length != 0){
+	    controls.movedSteps += (' ' + currentStep)
+	  }
+	  else {
+	    controls.movedSteps += currentStep
+	  }
 	}
+
+	function moveAllForward () {
+	    while (controls.steps.length != 0){
+	        moveSingleForward ()
+	    }
+	}
+
+	function moveSingleBackward() {
+	  // get last step
+	  var splitSteps = controls.movedSteps.split(' ')
+	  var lastStep = splitSteps[splitSteps.length-1]
+
+	  // reverse last step
+	  var reverseLastStep = algorithm.invert(lastStep)
+
+	  // call API to run reversed last step
+	  cube.algorithm(reverseLastStep)
+
+	  // update controls.movedSteps
+	  var restSteps = ''
+	  for (var i = 0; i < splitSteps.length-1; i++) {
+	      if (i != splitSteps.length - 1){
+	        restSteps += splitSteps[i] + ' ';
+	      }
+	      else{
+	        restSteps += splitSteps[i];
+	      }
+	  }
+	  controls.movedSteps = restSteps
+
+	  // update controls.steps
+	  if (controls.steps.length != 0){
+	    controls.steps = (lastStep + ' ' + currentStepcontrols.movedSteps)
+	  }
+	  else {
+	    controls.steps = lastStep
+	  }
+	}
+
+	function moveAllBackward() {
+	    while (controls.movedSteps.length != 0){
+	        moveSingleBackward ()
+	    }
+	}
+
 
 	function solve (selectedAlg) {
 	  // 公式法
