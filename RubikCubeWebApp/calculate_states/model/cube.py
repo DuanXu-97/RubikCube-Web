@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from .block import Block
-from .enums import Faces, Colors
-from .rules import RULES
+from RubikCubeWebApp.calculate_states.model.block import Block
+from RubikCubeWebApp.calculate_states.enums import Faces, Colors
+from RubikCubeWebApp.calculate_states.rules import RULES
 
 
 class Cube:
