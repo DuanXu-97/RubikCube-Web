@@ -177,19 +177,13 @@ class Formula(list):
             sequence = [sequence]
         elif type(sequence) == str:
             sequence = sequence.split()
-            print(sequence)
-            print(type(sequence))
+
         elif type(sequence).__name__ == 'unicode':
             sequence = sequence.encode('utf-8')
             sequence = sequence.split()
-            print(sequence)
-            print(type(sequence))
 
         new_sequence = list()
         for i in range(len(sequence)):
-            print(len(sequence))
-            print(sequence[i])
-            print(type(sequence[i]))
             new_sequence.append(Step(sequence[i]))
 
         sequence = new_sequence
