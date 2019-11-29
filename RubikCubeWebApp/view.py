@@ -113,7 +113,7 @@ class VerifyLegality(View):
             else:
                 return HttpResponse('{"code": 1, "message":"魔方状态合法"}', content_type='application/json')
 
-                
+
 
 
 
