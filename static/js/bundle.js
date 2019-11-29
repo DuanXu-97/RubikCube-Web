@@ -147,12 +147,12 @@
 
 	  var st = folder('魔方状态')
 	  st.add(controls, 'scramble').name('随机打乱')
-	    .onChange(function () { cube.scramble(); controls.steps = '';})
+	    .onChange(function () { cube.scramble(); controls.steps = ''; controls.movedSteps = '';})
 	  st.add(controls, 'state').name('当前状态').listen()
 	  st.add(controls, 'button').name('修改状态')
-	    .onFinishChange(function () { cube.setState(controls.state); controls.steps = '';})
+	    .onFinishChange(function () { cube.setState(controls.state); controls.steps = ''; controls.movedSteps = '';})
 	  st.add(controls, 'button').name('重置状态')
-	    .onFinishChange(function () { cube.setState('UUUUUUUUULLLLLLLLLFFFFFFFFFRRRRRRRRRBBBBBBBBBDDDDDDDDD'); controls.steps = '';})
+	    .onFinishChange(function () { cube.setState('UUUUUUUUULLLLLLLLLFFFFFFFFFRRRRRRRRRBBBBBBBBBDDDDDDDDD'); controls.steps = ''; controls.movedSteps = '';})
 
 	  var c = folder('魔方求解')
 	  c.add(controls, 'algorithm', algorithms).setValue(algorithms[0]).name('算法').listen()
@@ -238,7 +238,7 @@
 	  // update controls.movedSteps
 	  var restSteps = ''
 	  for (var i = 0; i < splitSteps.length-1; i++) {
-	      if (i != splitSteps.length - 1){
+	      if (i != splitSteps.length - 2){
 	        restSteps += splitSteps[i] + ' ';
 	      }
 	      else{
