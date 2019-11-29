@@ -294,8 +294,8 @@
 
 	          swal({
 	            text: "正在求解中...",
-	//            showConfirmButton: false,
-	//            showLoaderOnConfirm: true,
+	            showConfirmButton: false,
+	            showLoaderOnConfirm: true,
 	            imageUrl: "/static/img/loading.gif",
 	            closeOnClickOutside: false,
 	          });
