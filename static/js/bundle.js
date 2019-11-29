@@ -297,10 +297,7 @@
 	            showConfirmButton: false,
 	            showLoaderOnConfirm: true,
 	            imageUrl: "/static/img/loading.gif",
-	            showCancelButton: false,
 	            closeOnClickOutside: false,
-	            closeOnEsc: false,
-	            closeModal: false,
 	          });
 
 	          $.ajax({
