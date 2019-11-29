@@ -366,6 +366,8 @@ class Formula(list):
         elif isinstance(sequence, Step):
             sequence = [sequence]
         for i in range(len(sequence)):
+            print(sequence[i])
+            print(type(sequence[i]))
             sequence[i] = Step(sequence[i])
         super(Formula, self).__init__(sequence)
 
