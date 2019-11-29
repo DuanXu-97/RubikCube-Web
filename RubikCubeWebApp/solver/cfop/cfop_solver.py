@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-import sys
-import io
-import time
-
-from RubikCubeWebApp.calculate_states.cube_string import CubeString
 from RubikCubeWebApp.solver.kociemba.kociemba_solver import KociembaSolver
 from RubikCubeWebApp.solver.model.cube import Cube
 from RubikCubeWebApp.solver.model.formula import Formula
@@ -14,49 +9,35 @@ from RubikCubeWebApp.solver.cfop.pll import PLLSolver
 
 
 class CFOPSolver(object):
-    def __init__(self, cube=None):
-        self.cube = cube
+    """CFOP公式法求解三阶魔方"""
 
-    def feed(self, cube):
-        self.cube = cube
+    def __init__(self, string):
+        """
+        初始化魔方
+
+        :param string: 传入前端表示当前魔方状态的字符串，顺序为 ULFRBD
+        """
+        # 利用Kociemba库，获得从还原状态到当前状态的操作
+        moves = Formula(KociembaSolver(string).get_moves_to_random_state())
+        # 执行上一步得到的操作，得到待解的魔方
+        self.cube = Cube().perform_algo(moves)
 
     def solve(self):
+        """
+        CFOP公式法解魔方
+
+        :return: 返回步骤字符串
+        """
         if not self.cube.is_valid():
             raise ValueError("Invalid Cube.")
-        result = Formula()
 
-        solver = CrossSolver(self.cube)
-        cross = solver.solve()
-        result += cross
+        result = Formula()
+        result += CrossSolver(self.cube).solve()
 
         solver = F2LSolver(self.cube)
         for i, f2l_single in enumerate(solver.solve(), 1):
             result += f2l_single[1]
 
-        solver = OLLSolver(self.cube)
-        oll = solver.solve()
-        result += oll
-
-        solver = PLLSolver(self.cube)
-        pll = solver.solve()
-        result += pll
+        result += OLLSolver(self.cube).solve()
+        result += PLLSolver(self.cube).solve()
         return result
-
-
-if __name__ == '__main__':
-    # cs = CubeString('DBLRUFUBRBDLBLBRDDFLFRFURUUDLUFRLRDDBDLUBULRBBRFFDLUFF', ordering='ULFRBD').re
-    # k = KociembaSolver('BDRDURFFFLRLULLBFUDDDBFUFDDRBBFRLRBUUBDUBRRFLLLBRDUULF')
-    # print(k.solve())
-    a = time.time()
-    moves = Formula(
-        KociembaSolver('BDRDURFFFLRLULLBFUDDDBFUFDDRBBFRLRBUUBDUBRRFLLLBRDUULF').get_moves_to_random_state())
-    print(time.time() - a)
-
-    b = time.time()
-    c = Cube().perform_algo(moves)
-    print(time.time() - b)
-
-    d = time.time()
-    solution = CFOPSolver(c).solve()
-    print(time.time() - d)
-    # print(solution)
