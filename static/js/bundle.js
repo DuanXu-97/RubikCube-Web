@@ -264,7 +264,7 @@
 
 
 	function solve (selectedAlg) {
-	  // 公式法
+	  // 层先法
 	  if (selectedAlg == algorithms[0]) {
 	    var alg = solver.solve(new State(cube.getState()))
 	    var opt = algorithm.optimize(alg)
@@ -277,12 +277,12 @@
 	    }
 	  }
 
-	  // DeepCubeA
-	  else if (selectedAlg == algorithms[1]) {
+	  // CFOP、Kociemba、DeepCubeA
+	  else if (selectedAlg == algorithms[1] || selectedAlg == algorithms[2] || selectedAlg == algorithms[3]) {
 
 	    $.ajax({
 	      type: "POST",
-	      url:"/is_fast_deepcubea/",
+	      url:"/verify_legality/",
 	      data: {
 	        state_str: cube.getState(),
 	      },
@@ -303,8 +303,8 @@
 	              type: "POST",
 	              url:"/solve_cube/",
 	              data: {
-	                state_str: data.id_seq,
-	                method_type: 1,
+	                state_str: cube.getState(),
+	                method_type: algorithms.indexOf(selectedAlg),
 	              },
 	              dateType:"json",
 	              async: true,
