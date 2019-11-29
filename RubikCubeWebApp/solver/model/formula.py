@@ -365,10 +365,12 @@ class Formula(list):
             print(type(sequence))
         elif isinstance(sequence, Step):
             sequence = [sequence]
+        new_sequence = list()
         for i in range(len(sequence)):
             print(sequence[i])
             print(type(sequence[i]))
-            sequence[i] = Step(sequence[i])
+            new_sequence[i] = Step(sequence[i])
+        sequence = new_sequence
         super(Formula, self).__init__(sequence)
 
     def __repr__(self):
