@@ -294,11 +294,11 @@
 
 	          swal({
 	            text: "正在求解中...",
-	            showConfirmButton: true,
+	            showConfirmButton: false,
 	            showLoaderOnConfirm: true,
 	            imageUrl: "/static/img/loading.gif",
 	            showCancelButton: false,
-	            closeOnClickOutside: false,
+	            closeOnClickOutside: true,
 	          });
 
 	          $.ajax({
