@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import sys
+sys.path.append('../../../')
 from RubikCubeWebApp.solver.kociemba.kociemba_solver import KociembaSolver
 from RubikCubeWebApp.solver.model.cube import Cube
 from RubikCubeWebApp.solver.model.formula import Formula
