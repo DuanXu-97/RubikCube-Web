@@ -247,7 +247,7 @@ function solve (selectedAlg) {
         if (data.code == '1') {
 
           swal({
-            title: "正在求解中...",
+            text: "正在求解中...",
             showConfirmButton: false,
             showLoaderOnConfirm: true,
             imageUrl: "/static/img/loading.gif",
@@ -274,7 +274,7 @@ function solve (selectedAlg) {
                 }
                 else{
                   swal({
-                    text: data.message,
+                    text: "求解失败，请重试",
                     type: "error"
                   });
                 }
@@ -283,7 +283,7 @@ function solve (selectedAlg) {
         }
         else if (data.code == '2') {
           swal({
-            text: data.message,
+            text: "该状态搜索时间较长，已转为公式法",
             type: "info",
           }).then(function() {
               controls.algorithm = algorithms[0]
@@ -300,7 +300,7 @@ function solve (selectedAlg) {
         }
         else{
           swal({
-            text: data.message,
+            text: "魔方状态不合法",
             type: "error"
           });
         }

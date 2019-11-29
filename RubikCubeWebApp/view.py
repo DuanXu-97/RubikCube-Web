@@ -48,9 +48,9 @@ class SolveCubeView(View):
                 moves = solver.solve()
             except Exception as e:
                 print(e)
-                return HttpResponse('{"code": -1, "message":"求解失败请重试"}', content_type='application/json')
+                return HttpResponse('{"code": -1, "message":"Solve failed, please try again."}', content_type='application/json')
 
-            return HttpResponse('{"code": 1, "message":"成功", "moves":"' + moves + '"}', content_type='application/json')
+            return HttpResponse('{"code": 1, "message":"Solve succeed.", "moves":"' + moves + '"}', content_type='application/json')
 
 
         # Kociemba
@@ -60,9 +60,9 @@ class SolveCubeView(View):
                 moves = solver.solve()
             except Exception as e:
                 print(e)
-                return HttpResponse('{"code": -1, "message":"求解失败请重试"}', content_type='application/json')
+                return HttpResponse('{"code": -1, "message":"Solve failed, please try again."}', content_type='application/json')
 
-            return HttpResponse('{"code": 1, "message":"成功", "moves":"' + moves + '"}', content_type='application/json')
+            return HttpResponse('{"code": 1, "message":"Solve succeed.", "moves":"' + moves + '"}', content_type='application/json')
 
 
         # DeepCubeA
@@ -73,9 +73,9 @@ class SolveCubeView(View):
             try:
                 moves, _, _ = deepcubea(id_seq)
             except AssertionError:
-                return HttpResponse('{"code": -1, "message":"解法不合法"}', content_type='application/json')
+                return HttpResponse('{"code": -1, "message":"Illegal solution."}', content_type='application/json')
 
-            return HttpResponse('{"code": 1, "message":"成功", "moves":"' + moves + '"}', content_type='application/json')
+            return HttpResponse('{"code": 1, "message":"Solve succeed.", "moves":"' + moves + '"}', content_type='application/json')
 
         # Formula
         elif method_type == 0:
@@ -83,7 +83,7 @@ class SolveCubeView(View):
             pass
 
         else:
-            return HttpResponse('{"code": -1, "message":"方法不存在"}', content_type='application/json')
+            return HttpResponse('{"code": -1, "message":"Method not exists"}', content_type='application/json')
 
 
 class VerifyLegality(View):
@@ -93,25 +93,25 @@ class VerifyLegality(View):
 
         is_legal = simple_check_input(state_str)
         if is_legal is False:
-            return HttpResponse('{"code": -1, "message":"魔方状态不合法"}', content_type='application/json')
+            return HttpResponse('{"code": -1, "message":"Illegal Rubik cube status"}', content_type='application/json')
         else:
             if method_type == 3:
 
                 id_seq = calculate_states(state_str)
                 if id_seq is None:
-                    return HttpResponse('{"code": -1, "message":"魔方状态不合法"}', content_type='application/json')
+                    return HttpResponse('{"code": -1, "message":"Illegal Rubik cube status"}', content_type='application/json')
 
                 is_solvable = False
                 for state in deepcubea_states:
                     if id_seq == state.tolist():
                         is_solvable = True
                 if is_solvable is False:
-                    return HttpResponse('{"code": 2, "message":"该状态搜索时间较长，已转为公式法"}', content_type='application/json')
+                    return HttpResponse('{"code": 2, "message":"Converted to formula method"}', content_type='application/json')
 
                 else:
-                    return HttpResponse('{"code": 1, "message":"可采用DeepCubeA求解", "id_seq":"' + str(id_seq) + '"}', content_type='application/json')
+                    return HttpResponse('{"code": 1, "message":"Able to solved with DeepCubeA", "id_seq":"' + str(id_seq) + '"}', content_type='application/json')
             else:
-                return HttpResponse('{"code": 1, "message":"魔方状态合法"}', content_type='application/json')
+                return HttpResponse('{"code": 1, "message":"legal Rubik cube status"}', content_type='application/json')
 
 
 
