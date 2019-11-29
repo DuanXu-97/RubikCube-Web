@@ -175,11 +175,17 @@ class Formula(list):
     def __init__(self, sequence=[]):
         if isinstance(sequence, Step):
             sequence = [sequence]
-        else:
+        elif type(sequence) == str:
+            sequence = sequence.split()
+            print(sequence)
+            print(type(sequence))
+        elif type(sequence).__name__ == 'unicode':
             sequence = sequence.encode('utf-8')
             sequence = sequence.split()
             print(sequence)
             print(type(sequence))
+
+
         new_sequence = list()
         for i in range(len(sequence)):
             print(len(sequence))

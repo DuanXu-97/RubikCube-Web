@@ -6,8 +6,6 @@ from solver.cfop.cfop_solver import CFOPSolver
 import sys
 sys.path.append('./')
 
-
-
 def gen_states_by_face():
 
     with open(os.path.join(BASE_DIR, 'RubikCubeWebApp/solver/deepcubea/states_by_id.pkl'), "rb") as f:
@@ -64,7 +62,9 @@ def cfop_test():
 
 
 if __name__ == '__main__':
-    cfop_test()
+    str = u'123'
+    qwe = type(str)
+    print(type(qwe))
 
 
 
