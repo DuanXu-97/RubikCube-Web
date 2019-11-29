@@ -239,6 +239,7 @@ function solve (selectedAlg) {
       url:"/verify_legality/",
       data: {
         state_str: cube.getState(),
+        method_type: algorithms.indexOf(selectedAlg),
       },
       dateType:"json",
       async: true,
