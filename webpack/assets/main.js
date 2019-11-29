@@ -93,46 +93,29 @@ var controls = {
 var algorithms = ['公式法', 'DeepCubeA'];
 
 function initGui () {
-  var c = folder('操作')
-//  c.add(controls, 'size').min(1).step(1).name('Size')
-//    .onChange(function (size) { cube.setSize(size); })
-  c.add(controls, 'scramble').name('随机打乱')
-    .onChange(function () { cube.scramble(); })
-  c.add(controls, 'solve').name('解魔方')
-    .onChange(function () { solve(controls.algorithm); })
-  c.add(controls, 'algorithm', algorithms).setValue(algorithms[0]).name('算法').listen()
-
   var v = folder('视角')
   v.add(controls, 'labels').name('显示方位标记').listen()
     .onFinishChange(function (v) { cube.setLabels(v); })
   v.add(controls, 'camera').name('重置摄像机')
     .onFinishChange(function () { cube.resetCamera(); })
 
-  var s = folder('步骤分解')
+  var st = folder('魔方状态')
+  st.add(controls, 'scramble').name('随机打乱')
+    .onChange(function () { cube.scramble(); })
+  st.add(controls, 'state').name('状态').listen()
+  st.add(controls, 'button').name('修改状态')
+    .onFinishChange(function () { cube.setState(controls.state); })
+
+  var c = folder('魔方求解')
+  c.add(controls, 'algorithm', algorithms).setValue(algorithms[0]).name('算法').listen()
+  c.add(controls, 'isAnimationAuto').setValue(true).name('自动播放解法').listen()
+  c.add(controls, 'solve').name('解魔方')
+    .onChange(function () { solve(controls.algorithm); })
+
+  var s = folder('求解结果')
   s.add(controls, 'steps').name('总步骤').listen()
-  s.add(controls, 'isAnimationAuto').setValue(true).name('自动播放解法').listen()
   s.add(controls, 'move').name('执行当前步骤')
     .onFinishChange(function () { runCurrentStep(); })
-
-
-//  var a = folder('Animation')
-//  var interpolators = Object.keys(interpolation.interpolators)
-//  a.add(controls, 'duration').min(0).step(100).setValue(300).name('Duration (ms)')
-//    .onFinishChange(function (d) { cube.setAnimationDuration(d); })
-//  a.add(controls, 'interpolator', interpolators).setValue(interpolators[0]).name('Interpolator')
-//    .onFinishChange(function (i) { cube.setInterpolator(i); })
-
-//  var st = folder('State')
-//  st.add(controls, 'state').name('Modify State').listen()
-//  st.add(controls, 'button').name('Apply State')
-//    .onFinishChange(function () { cube.setState(controls.state); })
-
-//  var alg = folder('算法')
-//  alg.add(controls, 'alg').name('Edit Algorithm').listen()
-//  alg.add(controls, 'button').name('Run')
-//    .onFinishChange(function () { cube.algorithm(controls.alg); })
-//  alg.add(controls, 'button').name('Invert')
-//    .onFinishChange(function () { controls.alg = algorithm.invert(controls.alg); })
 
   if (window.innerWidth <= 500) gui.close()
 
