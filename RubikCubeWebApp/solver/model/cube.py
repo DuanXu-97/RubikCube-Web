@@ -5,7 +5,7 @@ from functools import reduce
 from itertools import permutations
 
 
-class Square:
+class Square(object):
     """色块类，三阶魔方每个面有九个色块"""
 
     def __init__(self, colour, parent=None, children=[]):
@@ -66,7 +66,7 @@ class Square:
         return hash(str(self)) + colour_to_hex[self.colour]
 
 
-class Cubie:
+class Cubie(object):
     """小方块类，魔方中心块、角块和中心块的父类"""
 
     def __init__(self, parent=None, children=[], **kwargs):
@@ -205,7 +205,7 @@ class Corner(Cubie):
         self.type = "corner"
 
 
-class Cube:
+class Cube(object):
     """魔方类，包含若干cubie"""
 
     def __init__(self, cubies=None):
