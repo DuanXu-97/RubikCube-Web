@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
 from .calculate_states.main import calculate_states
-from .kernel.scripts.solveStartingStates import runMethods as deepcubea
+from .solver.deepcubea.scripts.solveStartingStates import runMethods as deepcubea
 import logging
 import json
 

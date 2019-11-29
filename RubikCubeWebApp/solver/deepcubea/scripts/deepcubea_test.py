@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 try:
-    from RubikCubeWebApp.kernel.scripts.solveStartingStates import *
+    from RubikCubeWebApp.solver.deepcubea.scripts.solveStartingStates import *
 except ImportError:
     import sys
     sys.path.append('./')

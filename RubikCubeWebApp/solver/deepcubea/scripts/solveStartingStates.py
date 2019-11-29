@@ -3,7 +3,7 @@ import time
 import gc
 import sys
 try:
-    from RubikCubeWebApp.kernel.scripts.config import Config
+    from RubikCubeWebApp.solver.deepcubea.scripts.config import Config
 except ImportError:
     sys.path.append('./')
     from config import Config
