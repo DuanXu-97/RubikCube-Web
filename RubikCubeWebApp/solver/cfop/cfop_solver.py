@@ -18,7 +18,10 @@ class CFOPSolver(object):
         :param string: 传入前端表示当前魔方状态的字符串，顺序为 ULFRBD
         """
         # 利用Kociemba库，获得从还原状态到当前状态的操作
-        moves = Formula(KociembaSolver(string).get_moves_to_random_state())
+        moves_to_random_state = KociembaSolver(string).get_moves_to_random_state()
+        print(moves_to_random_state)
+        print(type(moves_to_random_state))
+        moves = Formula(moves_to_random_state)
         # 执行上一步得到的操作，得到待解的魔方
         self.cube = Cube().perform_algo(moves)
 
