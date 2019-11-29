@@ -38,7 +38,7 @@ class IndexView(View):
 
 class SolveCubeView(View):
     def post(self, request):
-        state_str = request.POST.get('state_str')
+        state_str = str(request.POST.get('state_str'))
         method_type = int(request.POST.get('method_type'))
 
         # CFOP
