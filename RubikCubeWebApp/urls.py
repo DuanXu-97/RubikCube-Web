@@ -21,5 +21,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', view.IndexView.as_view(), name='index'),
     url(r'^solve_cube/$', view.SolveCubeView.as_view(), name='solve_cube'),
-    url(r'^is_fast_deepcubea/$', view.IsFastDeepCubeA.as_view(), name='is_fast_deepcubea'),
+    url(r'^verify_legality/$', view.VerifyLegality.as_view(), name='verify_legality'),
 ]

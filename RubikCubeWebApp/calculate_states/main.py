@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import sys
+sys.path.append('../')
 from RubikCubeWebApp.calculate_states.model.cube import Cube
 from RubikCubeWebApp.calculate_states.cube_string import CubeString
 from RubikCubeWebApp.calculate_states.enums import Colors, Moves

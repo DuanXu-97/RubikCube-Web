@@ -6,9 +6,9 @@ var assets = "./assets";
 var config = {
     entry: assets + "/main",
     output: {
-        path: __dirname + "/build",
+        path: __dirname + "/../static/js",
         filename: "bundle.js",
-        publicPath: "/build/"
+        publicPath: "/../static/js/"
     },
     module: {
         loaders: [

@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/build/";
+/******/ 	__webpack_require__.p = "/../static/js/";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -132,11 +132,11 @@
 	  button: function () {}, // used for other buttons
 	  algorithm: '',
 	  steps: '',
+	  movedSteps: '',
 	  isAnimationAuto: false, //whether run animation when click solve
-	  move: function () {},
 	}
 
-	var algorithms = ['公式法', 'DeepCubeA'];
+	var algorithms = ['层先法', 'CFOP', 'Kociemba', 'DeepCubeA'];
 
 	function initGui () {
 	  var v = folder('视角')
@@ -147,10 +147,12 @@
 
 	  var st = folder('魔方状态')
 	  st.add(controls, 'scramble').name('随机打乱')
-	    .onChange(function () { cube.scramble(); })
-	  st.add(controls, 'state').name('状态').listen()
+	    .onChange(function () { cube.scramble(); controls.steps = ''; controls.movedSteps = '';})
+	  st.add(controls, 'state').name('当前状态').listen()
 	  st.add(controls, 'button').name('修改状态')
-	    .onFinishChange(function () { cube.setState(controls.state); })
+	    .onFinishChange(function () { cube.setState(controls.state); controls.steps = ''; controls.movedSteps = '';})
+	  st.add(controls, 'button').name('重置状态')
+	    .onFinishChange(function () { cube.setState('UUUUUUUUULLLLLLLLLFFFFFFFFFRRRRRRRRRBBBBBBBBBDDDDDDDDD'); controls.steps = ''; controls.movedSteps = '';})
 
 	  var c = folder('魔方求解')
 	  c.add(controls, 'algorithm', algorithms).setValue(algorithms[0]).name('算法').listen()
@@ -159,9 +161,16 @@
 	    .onChange(function () { solve(controls.algorithm); })
 
 	  var s = folder('求解结果')
-	  s.add(controls, 'steps').name('总步骤').listen()
-	  s.add(controls, 'move').name('执行当前步骤')
-	    .onFinishChange(function () { runCurrentStep(); })
+	  s.add(controls, 'steps').name('步骤').listen()
+	  s.add(controls, 'movedSteps').name('已执行步骤').listen()
+	  s.add(controls, 'button').name('单步执行')
+	    .onFinishChange(function () { moveSingleForward(); })
+	  s.add(controls, 'button').name('单步回退')
+	    .onFinishChange(function () { moveSingleBackward(); })
+	  s.add(controls, 'button').name('执行剩余步骤')
+	    .onFinishChange(function () { moveAllForward(); })
+	  s.add(controls, 'button').name('回退所有步骤')
+	    .onFinishChange(function () { moveAllBackward(); })
 
 	  if (window.innerWidth <= 500) gui.close()
 
@@ -180,10 +189,15 @@
 	  canvas.focus()
 	}
 
-	function runCurrentStep () {
+	function moveSingleForward () {
+	  // get current step
 	  var splitSteps = controls.steps.split(' ')
 	  var currentStep = splitSteps[0]
+
+	  // call API to run current step
 	  cube.algorithm(currentStep)
+
+	  //  update controls.steps
 	  var restSteps = ''
 	  for (var i = 1; i < splitSteps.length; i++) {
 	      if (i != splitSteps.length - 1){
@@ -194,10 +208,63 @@
 	      }
 	  }
 	  controls.steps = restSteps
+
+	  // update controls.movedSteps
+	  if (controls.movedSteps.length != 0){
+	    controls.movedSteps += (' ' + currentStep)
+	  }
+	  else {
+	    controls.movedSteps += currentStep
+	  }
 	}
 
+	function moveAllForward () {
+	    while (controls.steps.length != 0){
+	        moveSingleForward ()
+	    }
+	}
+
+	function moveSingleBackward() {
+	  // get last step
+	  var splitSteps = controls.movedSteps.split(' ')
+	  var lastStep = splitSteps[splitSteps.length-1]
+
+	  // reverse last step
+	  var reverseLastStep = algorithm.invert(lastStep)
+
+	  // call API to run reversed last step
+	  cube.algorithm(reverseLastStep)
+
+	  // update controls.movedSteps
+	  var restSteps = ''
+	  for (var i = 0; i < splitSteps.length-1; i++) {
+	      if (i != splitSteps.length - 2){
+	        restSteps += splitSteps[i] + ' ';
+	      }
+	      else{
+	        restSteps += splitSteps[i];
+	      }
+	  }
+	  controls.movedSteps = restSteps
+
+	  // update controls.steps
+	  if (controls.steps.length != 0){
+	    controls.steps = (lastStep + ' ' + controls.steps)
+	  }
+	  else {
+	    controls.steps = lastStep
+	  }
+	}
+
+	function moveAllBackward() {
+	    while (controls.movedSteps.length != 0){
+	        moveSingleBackward ()
+	    }
+	}
+
+
 	function solve (selectedAlg) {
-	  // 公式法
+	  // 层先法
 	  if (selectedAlg == algorithms[0]) {
 	    var alg = solver.solve(new State(cube.getState()))
 	    var opt = algorithm.optimize(alg)
@@ -206,18 +273,19 @@
 	    console.log('Algorithm:', alg)
 
 	    if (controls.isAnimationAuto) {
-	        cube.algorithm(opt)
+	        moveAllForward();
 	    }
 	  }
 
-	  // DeepCubeA
-	  else if (selectedAlg == algorithms[1]) {
+	  // CFOP、Kociemba、DeepCubeA
+	  else if (selectedAlg == algorithms[1] || selectedAlg == algorithms[2] || selectedAlg == algorithms[3]) {
 
 	    $.ajax({
 	      type: "POST",
-	      url:"/is_fast_deepcubea/",
+	      url:"/verify_legality/",
 	      data: {
 	        state_str: cube.getState(),
+	        method_type: algorithms.indexOf(selectedAlg),
 	      },
 	      dateType:"json",
 	      async: true,
@@ -225,7 +293,7 @@
 	        if (data.code == '1') {
 
 	          swal({
-	            title: "正在求解中...",
+	            text: "正在求解中...",
 	            showConfirmButton: false,
 	            showLoaderOnConfirm: true,
 	            imageUrl: "/static/img/loading.gif",
@@ -236,8 +304,8 @@
 	              type: "POST",
 	              url:"/solve_cube/",
 	              data: {
-	                state_str: data.id_seq,
-	                method_type: 1,
+	                state_str: cube.getState(),
+	                method_type: algorithms.indexOf(selectedAlg),
 	              },
 	              dateType:"json",
 	              async: true,
@@ -247,12 +315,12 @@
 	                  controls.steps = opt
 	                  console.log('Algorithm:', alg)
 	                  if (controls.isAnimationAuto) {
-	                    cube.algorithm(opt)
+	                    moveAllForward();
 	                  }
 	                }
 	                else{
 	                  swal({
-	                    text: data.message,
+	                    text: "求解失败，请重试",
 	                    type: "error"
 	                  });
 	                }
@@ -261,7 +329,7 @@
 	        }
 	        else if (data.code == '2') {
 	          swal({
-	            text: data.message,
+	            text: "该状态搜索时间较长，已转为公式法",
 	            type: "info",
 	          }).then(function() {
 	              controls.algorithm = algorithms[0]
@@ -272,13 +340,13 @@
 	              console.log('Algorithm:', alg)
 
 	              if (controls.isAnimationAuto) {
-	                cube.algorithm(opt)
+	                moveAllForward();
 	              }
 	            });
 	        }
 	        else{
 	          swal({
-	            text: data.message,
+	            text: "魔方状态不合法",
 	            type: "error"
 	          });
 	        }
@@ -5025,7 +5093,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = function() {
-		return new Worker(__webpack_require__.p + "27e9e5c9243f9eecc7d5.worker.js");
+		return new Worker(__webpack_require__.p + "5113c9b51ce3c551aef4.worker.js");
 	};
 
 /***/ }),
