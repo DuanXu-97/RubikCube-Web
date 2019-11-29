@@ -45,7 +45,7 @@ class SolveCubeView(View):
         if method_type == 1:
             try:
                 solver = CFOPSolver(state_str)
-                moves = solver.solve()
+                moves = str(solver.solve())
             except Exception as e:
                 print(e)
                 return HttpResponse('{"code": -1, "message":"Solve failed, please try again."}', content_type='application/json')
