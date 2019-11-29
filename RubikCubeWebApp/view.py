@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
 from .calculate_states.main import calculate_states
-from .kernel.scripts.solveStartingStates import runMethods as deepcubea
+from .solver.deepcubea.scripts.solveStartingStates import runMethods as deepcubea
 import logging
 import json
 
@@ -23,7 +23,7 @@ except:
 #                     filename="/var/www/RubikCubeWebApp/log.log",
 #                     filemode='w')
 
-with open(os.path.join(BASE_DIR, 'RubikCubeWebApp/kernel/states.pkl'), "rb") as f:
+with open(os.path.join(BASE_DIR, 'RubikCubeWebApp/solver/deepcubea/states.pkl'), "rb") as f:
     inputData = pickle.load(f)
     deepcubea_states = inputData['states']
 
