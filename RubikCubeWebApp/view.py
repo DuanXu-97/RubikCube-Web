@@ -8,6 +8,8 @@ from django.shortcuts import render
 from django.views.generic import View
 from .calculate_states.main import calculate_states
 from .solver.deepcubea.scripts.solveStartingStates import runMethods as deepcubea
+from .solver.kociemba.kociemba_solver import KociembaSolver
+from .solver.cfop.cfop_solver import CFOPSolver
 import logging
 import json
 
@@ -36,18 +38,44 @@ class IndexView(View):
 
 class SolveCubeView(View):
     def post(self, request):
+        state_str = request.POST.get('state_str')
         method_type = int(request.POST.get('method_type'))
 
-        # DeepCubeA
+        # CFOP
         if method_type == 1:
-            id_seq = request.POST.get('state_str')
+            try:
+                solver = CFOPSolver(state_str)
+                moves = solver.solve()
+            except Exception as e:
+                print(e)
+                return HttpResponse('{"code": -1, "message":"求解失败请重试"}', content_type='application/json')
+
+            return HttpResponse('{"code": 1, "message":"成功", "moves":"' + moves + '"}', content_type='application/json')
+
+
+        # Kociemba
+        elif method_type == 2:
+            try:
+                solver = KociembaSolver(state_str)
+                moves = solver.solve()
+            except Exception as e:
+                print(e)
+                return HttpResponse('{"code": -1, "message":"求解失败请重试"}', content_type='application/json')
+
+            return HttpResponse('{"code": 1, "message":"成功", "moves":"' + moves + '"}', content_type='application/json')
+
+
+        # DeepCubeA
+        elif method_type == 3:
+
+            id_seq = calculate_states(state_str)
 
             try:
-                soln, _, _ = deepcubea(id_seq)
+                moves, _, _ = deepcubea(id_seq)
             except AssertionError:
                 return HttpResponse('{"code": -1, "message":"解法不合法"}', content_type='application/json')
 
-            return HttpResponse('{"code": 1, "message":"成功", "moves":"' + soln + '"}', content_type='application/json')
+            return HttpResponse('{"code": 1, "message":"成功", "moves":"' + moves + '"}', content_type='application/json')
 
         # Formula
         elif method_type == 0:
@@ -58,7 +86,7 @@ class SolveCubeView(View):
             return HttpResponse('{"code": -1, "message":"方法不存在"}', content_type='application/json')
 
 
-class IsFastDeepCubeA(View):
+class VerifyLegality(View):
     def post(self, request):
         state_str = request.POST.get('state_str')
 
