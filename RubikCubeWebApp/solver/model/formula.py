@@ -318,6 +318,9 @@ class Formula(list):
         for i in range(len(sequence)):
             print(sequence[i])
             print(type(sequence[i]))
+            if isinstance(sequence[i], u'2'):
+                break
+            
             new_sequence.append(Step(sequence[i].encode('utf-8')))
         sequence = new_sequence
         super(Formula, self).__init__(sequence)
