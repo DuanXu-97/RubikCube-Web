@@ -214,7 +214,8 @@ class Cube:
         self.children = set()
         if not cubies:
             cubies = set()
-            colours = {"L": "red", "U": "yellow", "F": "green", "D": "white", "R": "orange", "B": "blue"}
+            colours = {"L": "orange", "U": "white", "F": "green", "D": "yellow", "R": "red", "B": "blue"}
+            # init colours = {"L": "red", "U": "yellow", "F": "green", "D": "white", "R": "orange", "B": "blue"}
             for loc in [
                 "LDB", "LDF", "LUB", "LUF", "RDB", "RDF", "RUB", "RUF",
                 "LB", "LF", "LU", "LD", "DB", "DF", "UB", "UF", "RB", "RF", "RU", "RD",
