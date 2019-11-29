@@ -203,7 +203,7 @@ function moveSingleBackward() {
 
   // update controls.steps
   if (controls.steps.length != 0){
-    controls.steps = (lastStep + ' ' + currentStepcontrols.movedSteps)
+    controls.steps = (lastStep + ' ' + controls.steps)
   }
   else {
     controls.steps = lastStep
@@ -227,7 +227,7 @@ function solve (selectedAlg) {
     console.log('Algorithm:', alg)
 
     if (controls.isAnimationAuto) {
-        cube.algorithm(opt)
+        moveAllForward();
     }
   }
 
@@ -268,7 +268,7 @@ function solve (selectedAlg) {
                   controls.steps = opt
                   console.log('Algorithm:', alg)
                   if (controls.isAnimationAuto) {
-                    cube.algorithm(opt)
+                    moveAllForward();
                   }
                 }
                 else{
@@ -293,7 +293,7 @@ function solve (selectedAlg) {
               console.log('Algorithm:', alg)
 
               if (controls.isAnimationAuto) {
-                cube.algorithm(opt)
+                moveAllForward();
               }
             });
         }

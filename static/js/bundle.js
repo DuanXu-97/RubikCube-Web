@@ -249,7 +249,7 @@
 
 	  // update controls.steps
 	  if (controls.steps.length != 0){
-	    controls.steps = (lastStep + ' ' + currentStepcontrols.movedSteps)
+	    controls.steps = (lastStep + ' ' + controls.steps)
 	  }
 	  else {
 	    controls.steps = lastStep
@@ -273,7 +273,7 @@
 	    console.log('Algorithm:', alg)
 
 	    if (controls.isAnimationAuto) {
-	        cube.algorithm(opt)
+	        moveAllForward();
 	    }
 	  }
 
@@ -314,7 +314,7 @@
 	                  controls.steps = opt
 	                  console.log('Algorithm:', alg)
 	                  if (controls.isAnimationAuto) {
-	                    cube.algorithm(opt)
+	                    moveAllForward();
 	                  }
 	                }
 	                else{
@@ -339,7 +339,7 @@
 	              console.log('Algorithm:', alg)
 
 	              if (controls.isAnimationAuto) {
-	                cube.algorithm(opt)
+	                moveAllForward();
 	              }
 	            });
 	        }
