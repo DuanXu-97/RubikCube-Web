@@ -121,12 +121,6 @@ class Cube:
         else:
             return None
 
-    def display(self):
-        """打印魔方各面的颜色，用于调试"""
-        for i in range(6):
-            # print(Colors(i).name, end=': ')
-            self.faces[i].display()
-
 
 class CubeFace:
     """
@@ -139,12 +133,6 @@ class CubeFace:
             self.blocks.append(Block(c))
         # 设置当前面的中心块
         self.blocks[4].set_center_block()
-
-    # def display(self):
-    #     """打印当前面所有色块的颜色"""
-    #     for b in self.blocks:
-    #         print(b.color, end='\t')
-    #     print()
 
     def get_states(self):
         """返回长度为9的列表，包含当前面各色块的编号"""

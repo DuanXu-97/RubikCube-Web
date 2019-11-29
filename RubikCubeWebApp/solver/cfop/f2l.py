@@ -1,15 +1,17 @@
+# -*- coding: utf-8 -*-
+
 """
 Module for solving Rubik's Cube F2L.
 """
-
-from pycuber import *
-from pycuber.helpers import fill_unknowns
+from RubikCubeWebApp.solver.model.cube import Corner, Edge, Formula, Step, Square
 from .util import a_star_search, path_actions
+
 
 class F2LPairSolver(object):
     """
     F2LPairSolver() => Solver for solving an F2L pair.
     """
+
     def __init__(self, cube=None, pair=None):
         self.cube = cube
         if pair and pair not in ["FR", "RB", "BL", "LF"]:
@@ -30,10 +32,10 @@ class F2LPairSolver(object):
         Get the F2L pair (corner, edge).
         """
         colours = (
-            self.cube[self.pair[0]].colour, 
-            self.cube[self.pair[1]].colour, 
+            self.cube[self.pair[0]].colour,
+            self.cube[self.pair[1]].colour,
             self.cube["D"].colour
-            )
+        )
         result_corner = self.cube.children.copy()
         for c in colours[:2]:
             result_corner &= self.cube.has_colour(c)
@@ -45,11 +47,11 @@ class F2LPairSolver(object):
         """
         Get the estimated cubie of solved pair.
         """
-        corner = {"D":self.cube["D"]["D"]}
+        corner = {"D": self.cube["D"]["D"]}
         edge = {}
         for cubie in (corner, edge):
             for face in self.pair:
-                cubie.update({face:self.cube[face][face]})
+                cubie.update({face: self.cube[face][face]})
         return (Corner(**corner), Edge(**edge))
 
     def get_slot(self):
@@ -81,13 +83,15 @@ class F2LPairSolver(object):
         """
         ((corner, edge), (L, U, F, D, R, B)) = state
         if "U" not in corner or "U" not in edge: return False
-        if set(edge).issubset(set(corner)): return True
-        elif set(edge.facings.keys()).issubset(set(corner.facings.keys())): return False
-        opposite = {"L":"R", "R":"L", "F":"B", "B":"F"}
+        if set(edge).issubset(set(corner)):
+            return True
+        elif set(edge.facings.keys()).issubset(set(corner.facings.keys())):
+            return False
+        opposite = {"L": "R", "R": "L", "F": "B", "B": "F"}
         edge_facings = list(edge)
         for i, (face, square) in enumerate(edge_facings):
             if face == "U":
-                if square != corner[opposite[edge_facings[(i+1)%2][0]]]:
+                if square != corner[opposite[edge_facings[(i + 1) % 2][0]]]:
                     return False
             else:
                 if square != corner["U"]:
@@ -101,17 +105,17 @@ class F2LPairSolver(object):
         """
         step = Step(step)
         movement = {
-            "U": "RFLB", 
-            "D": "LFRB", 
-            "R": "FUBD", 
-            "L": "FDBU", 
-            "F": "URDL", 
-            "B": "ULDR", 
-            }[step.face]
+            "U": "RFLB",
+            "D": "LFRB",
+            "R": "FUBD",
+            "L": "FDBU",
+            "F": "URDL",
+            "B": "ULDR",
+        }[step.face]
         movement = {
             movement[i]: movement[(i + step.is_clockwise + (-1 * step.is_counter_clockwise) + (2 * step.is_180)) % 4]
             for i in range(4)
-            }
+        }
         for cubie in pair:
             if step.face not in cubie:
                 if cubie.type == "edge":
@@ -151,20 +155,20 @@ class F2LPairSolver(object):
         Searching the path for combining the pair.
         """
         start = (
-            self.get_pair(), 
+            self.get_pair(),
             (
-                self.cube["L"], 
-                self.cube["U"], 
-                self.cube["F"], 
-                self.cube["D"], 
-                self.cube["R"], 
-                self.cube["B"], 
-                ), 
-            )
-        return sum(path_actions(a_star_search(start, 
-                       self.combining_successors, 
-                       lambda x: len(x), 
-                       self.combining_goal)), Formula())
+                self.cube["L"],
+                self.cube["U"],
+                self.cube["F"],
+                self.cube["D"],
+                self.cube["R"],
+                self.cube["B"],
+            ),
+        )
+        return sum(path_actions(a_star_search(start,
+                                              self.combining_successors,
+                                              lambda x: len(x),
+                                              self.combining_goal)), Formula())
 
     def combining_setup(self):
         """
@@ -175,11 +179,11 @@ class F2LPairSolver(object):
         if slot_type == "SLOTFREE":
             return ("FR", Formula(Step("y") * cycle.index(self.pair) or []))
         elif slot_type == "CSLOTFREE":
-            return (cycle[-(cycle.index(edge_slot) - cycle.index(self.pair))], 
-                    Formula(Step("y") * cycle.index(edge_slot) or [])) 
+            return (cycle[-(cycle.index(edge_slot) - cycle.index(self.pair))],
+                    Formula(Step("y") * cycle.index(edge_slot) or []))
         elif slot_type in ("ESLOTFREE", "WRONGSLOT"):
-            return (cycle[-(cycle.index(corner_slot) - cycle.index(self.pair))], 
-                    Formula(Step("y") * cycle.index(corner_slot) or [])) 
+            return (cycle[-(cycle.index(corner_slot) - cycle.index(self.pair))],
+                    Formula(Step("y") * cycle.index(corner_slot) or []))
         elif slot_type == "DIFFSLOT":
             if corner_slot != self.pair: corner_slot, edge_slot = edge_slot, corner_slot
             result = Formula(Step("y") * cycle.index(edge_slot) or [])
@@ -215,7 +219,7 @@ class F2LPairSolver(object):
         estimated = self.estimated_position()
         for U_act in [Formula(), Formula("U"), Formula("U2"), Formula("U'")]:
             self.cube(U_act)
-            for put_act in [Formula("R U R'"), Formula("R U' R'"), Formula("R U2 R'"), 
+            for put_act in [Formula("R U R'"), Formula("R U' R'"), Formula("R U2 R'"),
                             Formula("F' U F"), Formula("F' U' F"), Formula("F' U2 F")]:
                 self.cube(put_act)
                 if self.get_pair() == estimated:
@@ -234,6 +238,7 @@ class F2LSolver(object):
     """
     F2LSolver(cube) => An F2L solver.
     """
+
     def __init__(self, cube):
         self.cube = cube
 
@@ -264,4 +269,3 @@ class F2LSolver(object):
                     return False
             return True
         return False
-
