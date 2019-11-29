@@ -4,23 +4,6 @@
 This module is to implement the Rubik's Cube formulae.
 You can deal with Rubik's Cube formulae easily with Step and Formula.
 
-Usage:
-    >>> a = Formula("R U R' U'")
-    >>> a
-    R U R' U'
-
-    >>> a.reverse()
-    >>> a
-    U R U' R'
-
-    >>> a.mirror()
-    >>> a
-    U' L' U L
-
-    >>> a *= 3
-    >>> a
-    U' L' U L U' L' U L U' L' U L
-
 """
 
 import random
@@ -32,67 +15,11 @@ class Step(object):
     """
     Representing a Rubik's Cube action.
 
-    >>> r = Step("R")
-    >>> r
-    R
-
-    >>> u_prime = Step("U'")
-    >>> u_prime
-    U'
-
-    You can check if it's clockwise (ex: U), counter-clockwise (ex: U'), or 180 degrees (ex: U2)
-    >>> r.is_clockwise
-    True
-    >>> r.is_counter_clockwise
-    False
-    >>> r.is_180
-    False
-
-    >>> u_prime.is_clockwise
-    False
-    >>> u_prime.is_counter_clockwise
-    True
-    >>> u_prime.is_180
-    False
-
-    Or you can inverse action like this:
-    >>> s = Step("U'")
-    >>> s.inverse()
-    U
-
-    Reset the face of Step:
-    >>> s = s.set_face("L")
-    >>> s
-    L2
-
-    You can add two Steps together!
-    >>> s + Step("L'")
-    L
-    >>> s + Step("L2")
-    None
-
-    And also multiply by numbers!
-    >>> s = Step("L")
-    >>> s * 2
-    L2
-    >>> s * 5
-    L
     """
 
     def __init__(self, name):
         """
         Initialize a Step object.
-
-        >>> s = Step("R2")
-        >>> s
-        R2
-
-        >>> s.__init__("L'")
-        >>> s
-        L'
-
-        >>> s = Step("W'")
-        ValueError: Invalid action name.
         """
 
         if isinstance(name, Step):
@@ -120,10 +47,6 @@ class Step(object):
         """
         Representing a Step, just print out the name.
 
-        >>> s = Step("L'")
-
-        >>> s.__repr__()
-        "L'"
         """
         return self.name
 
@@ -131,21 +54,6 @@ class Step(object):
         """
         Check if two Steps are the same.
 
-        >>> s = Step("U'")
-        >>> p = Step("U'")
-
-        >>> s == p
-        True
-
-        >>> p = Step("U2")
-        >>> s == p
-        False
-
-        >>> s == "U'"
-        True
-
-        >>> s == "U2"
-        False
         """
         if type(another) == str:
             return self.name == another
@@ -158,20 +66,6 @@ class Step(object):
         """
         Check if two Steps are different.
 
-        >>> s = Step("R")
-        >>> p = Step("R")
-        >>> s != p
-        False
-
-        >>> p = Step("U'")
-        >>> s != p
-        True
-
-        >>> s != "R'"
-        True
-
-        >>> s != "R"
-        False
         """
         return not self.__eq__(another)
 
@@ -179,16 +73,6 @@ class Step(object):
         """
         Adding two Steps, these two have to be the same face action.
 
-        >>> s = Step("R")
-        >>> p = Step("R2")
-        >>> s + p
-        R'
-
-        >>> s + "R'"
-        None
-
-        >>> s + "L"
-        ValueError: Should be the same side action.
         """
         if type(another) == str:
             another = Step(another)
@@ -206,16 +90,6 @@ class Step(object):
         Multiply a Step by i times.
         The result will be as same as repeat this step for i times.
 
-        >>> s = Step("U")
-        >>> s * 2
-        U2
-        >>> s * 3
-        U'
-
-        >>> s = Step("U'")
-        >>> s * 3
-        U
-        >>> s * 10
         U2
         """
         i = i % 4
@@ -230,12 +104,7 @@ class Step(object):
         """
         Reset the face of the action.
 
-        >>> s = Step("R2")
-        >>> s
-        R2
 
-        >>> s = s.set_face("L")
-        >>> s
         L2
         """
         if new_face in list("LUFDRBlufdrbMSExyz"):
@@ -247,15 +116,11 @@ class Step(object):
         """
         Inverse the Step.
 
-        >>> s = Step("R")
-        >>> s
         R
 
-        >>> s.inverse()
         R'
 
-        >>> s = Step("R2")
-        >>> s.inverse()
+
         R2
         """
         return Step(self.name[0] + ("" if self.is_counter_clockwise else "'" if self.is_clockwise else "2"))
@@ -328,9 +193,6 @@ class Formula(list):
     def __repr__(self):
         """
         Representing a Formula object, just print out every move
-
-        >>> a = Formula("R U R' U'")
-        >>> a
         R U R' U'
         """
         return " ".join(map(lambda x: x.name, self))
@@ -339,8 +201,6 @@ class Formula(list):
         """
         Get ith item of Formula.
 
-        >>> a = Formula("R U R' U'")
-        >>> a[1]
         U
         """
         result = super(Formula, self).__getitem__(index)
@@ -352,12 +212,8 @@ class Formula(list):
         """
         Set ith item of Formula.
 
-        >>> a = Formula("R U R' U'")
-        >>> a[0] = Step("L")
-        >>> a
         L U R' U'
-        >>> a[0] = "R'"
-        >>> a
+
         R' U R' U'
         """
         if None is item:
@@ -456,12 +312,6 @@ class Formula(list):
         """
         Check if length of this Formula is equal to another.
 
-        >>> a = Formula("R U R' U'")
-        >>> a == Formula("R' F R F'")
-        True
-        >>> a == "U R U' R'"
-        True
-        >>> a == Formula("R U R'")
         False
         """
         return len(self) == len(Formula(another))
@@ -470,12 +320,6 @@ class Formula(list):
         """
         Check if length of this Formula is less than another.
 
-        >>> a = Formula("R U R' U'")
-        >>> a < Formula("R' F R F' R'")
-        True
-        >>> a < Formula("R U R'")
-        False
-        >>> a < "R' F R F' R'"
         True
         """
         return len(self) < len(Formula(another))
@@ -484,12 +328,6 @@ class Formula(list):
         """
         Check if length of this Formula is greater than another.
 
-        >>> a = Formula("R U R' U'")
-        >>> a > Formula("R U R'")
-        True
-        >>> a > Formula("R' F R F' R'")
-        False
-        >>> a > "R U R'"
         True
         """
         return len(self) > len(Formula(another))
@@ -498,12 +336,6 @@ class Formula(list):
         """
         Check if length of this Formula is greater than or equal to another.
 
-        >>> a = Formula("R U R' U'")
-        >>> a >= Formula("R U R'")
-        True
-        >>> a >= Formula("R' F R F' R'")
-        False
-        >>> a >= "R U R' U"
         True
         """
         return len(self) >= len(Formula(another))
@@ -512,12 +344,6 @@ class Formula(list):
         """
         Check if length of this Formula is less than or equal to another.
 
-        >>> a = Formula("R U R' U'")
-        >>> a <= Formula("R U R'")
-        False
-        >>> a <= Formula("R' F R F' R'")
-        True
-        >>> a <= "R U R' U"
         True
         """
         return len(self) <= len(Formula(another))
@@ -526,12 +352,6 @@ class Formula(list):
         """
         Check if length of this Formula is'n equal to another.
 
-        >>> a = Formula("R U R' U'")
-        >>> a <= Formula("R U R'")
-        False
-        >>> a <= Formula("R' F R F' R'")
-        True
-        >>> a <= "R U R' U"
         True
         """
         return len(self) != len(Formula(another))
@@ -577,12 +397,6 @@ class Formula(list):
         """
         Check if two Formulae are fully same.
 
-        >>> a = Formula("R U R' U'")
-        >>> a == Formula("R' F R F'")
-        True
-        >>> a | "R' F R F'"
-        False
-        >>> a | "R U R' U'"
         True
         """
         another = Formula(another)
@@ -598,9 +412,6 @@ class Formula(list):
         """
         Reverse this Formula.
 
-        >>> a = Formula("R U R' U'")
-        >>> a.reverse()
-        >>> a
         U R U' R'
         """
         if len(self) == 0: return self
@@ -625,9 +436,6 @@ class Formula(list):
         Helper function for Formula.optimise()
         Reduce the wide actions (double layers)
 
-        >>> a = Formula("r u' M2")
-        >>> a._optimise_wide_actions()
-        >>> a
         L x D' y' R2 L2 x2
         """
         pattern = {
@@ -663,9 +471,6 @@ class Formula(list):
         Helper function for Formula.optimise()
         Reduce the rotations (whole cube rotations).
 
-        >>> a = Formula("L x D' y' R2 L2 x2")
-        >>> a._optimise_rotations()
-        >>> a
         L B' D2 U2
         """
         pattern = {
@@ -695,14 +500,8 @@ class Formula(list):
         Helper function for Formula.optimise()
         Reduce repeated steps.
 
-        >>> a = Formula("R R2 U'")
-        >>> a._optimise_same_steps()
-        >>> a
         R' U'
 
-        >>> a = Formula("R L' R U2")
-        >>> a._optimise_same_steps()
-        >>> a
         R2 L' U2
         """
         opposite = {"U": "D", "L": "R", "F": "B", "D": "U", "R": "L", "B": "F"}
@@ -751,9 +550,6 @@ class Formula(list):
         - No cube rotations (x y z)
         - No repeated steps
 
-        >>> a = Formula("R U r' x2 M' y' D D' L2 R L'")
-        >>> a.optimise()
-        >>> a
         R U R' F B
         """
         _optimise_same_steps(_optimise_rotations(_optimise_wide_actions(self)))
@@ -768,13 +564,8 @@ class Formula(list):
         """
         Random n Steps. (default 25)
 
-        >>> a = Formula()
-        >>> a.random()
-        >>> a
         D' L' U B' D' F2 R D2 L2 F2 U' L' D F2 R' B D R2 B2 D R' U F2 R D
 
-        >>> a.random(15)
-        >>> a
         F' R D B2 R' F' L2 D2 F2 L2 D2 B' U F2 L
         """
         opposite = {"U": "D", "L": "R", "F": "B", "D": "U", "R": "L", "B": "F"}
@@ -798,21 +589,12 @@ class Formula(list):
         """
         Mirror the formula.
 
-        >>> a = Formula("R U R' U'")
-        >>> a.mirror()
-        >>> a
         L' U' L U
-        >>> a.mirror("LR")
-        >>> a
+
         R U R' U'
 
-        >>> a.mirror("UD")
-        >>> a
         R' D' R D
 
-        >>> a = Formula("R' F R F'")
-        >>> a.mirror("FB")
-        >>> a
         R B' R' B
         """
         opposite = {"U": "D", "L": "R", "F": "B", "D": "U", "R": "L", "B": "F"}
