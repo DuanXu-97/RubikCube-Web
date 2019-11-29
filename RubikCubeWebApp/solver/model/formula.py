@@ -361,6 +361,8 @@ class Formula(list):
     def __init__(self, sequence=[]):
         if type(sequence) == str:
             sequence = sequence.split()
+            print(sequence)
+            print(type(sequence))
         elif isinstance(sequence, Step):
             sequence = [sequence]
         for i in range(len(sequence)):

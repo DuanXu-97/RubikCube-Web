@@ -3,6 +3,8 @@ import pickle
 from settings import *
 from calculate_states.main import *
 from .solver.cfop.cfop_solver import CFOPSolver
+import sys
+sys.path.append('./')
 
 
 
