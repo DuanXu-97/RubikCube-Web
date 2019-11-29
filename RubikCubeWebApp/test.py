@@ -2,6 +2,8 @@ import os
 import pickle
 from settings import *
 from calculate_states.main import *
+from .solver.cfop.cfop_solver import CFOPSolver
+
 
 
 def gen_states_by_face():
@@ -52,10 +54,16 @@ def get_si_by_sf_in_pkl(sf):
     print(states_by_id[i])
 
 
+def cfop_test():
+    state_str = 'LLLBUUUBBDRFRLFBFBRDRUFRRUFDLDDRBRLLFDBLBFUULUBDDDFURF'
+    solver = CFOPSolver(state_str)
+    moves = solver.solve()
+    return moves
+
+
 if __name__ == '__main__':
-    # states_by_id = [27,12,0,19,4,52,24,46,33,2,3,9,14,13,37,6,41,35,44,16,47,50,22,39,42,23,51,38,32,45,5,31,25,29,10,15,53,21,36,48,40,28,20,30,26,18,1,17,34,49,43,8,7,11]
-    # state_by_face = calculate_states()
-    states_id_to_face()
+    moves = cfop_test()
+    print(moves)
 
 
 
