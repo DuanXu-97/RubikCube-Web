@@ -84,6 +84,7 @@ var controls = {
   state: cube.getState(),
   alg: util.getQueryParameter('algorithm') || '',
   button: function () {}, // used for other buttons
+  reset: function () {},
   algorithm: '',
   steps: '',
   isAnimationAuto: false, //whether run animation when click solve
@@ -101,10 +102,12 @@ function initGui () {
 
   var st = folder('魔方状态')
   st.add(controls, 'scramble').name('随机打乱')
-    .onChange(function () { cube.scramble(); })
-  st.add(controls, 'state').name('状态').listen()
+    .onChange(function () { cube.scramble(); controls.steps = '';})
+  st.add(controls, 'state').name('当前状态').listen()
   st.add(controls, 'button').name('修改状态')
-    .onFinishChange(function () { cube.setState(controls.state); })
+    .onFinishChange(function () { cube.setState(controls.state); controls.steps = '';})
+  st.add(controls, 'reset').name('重置状态')
+    .onFinishChange(function () { cube.setState('UUUUUUUUULLLLLLLLLFFFFFFFFFRRRRRRRRRBBBBBBBBBDDDDDDDDD'); controls.steps = '';})
 
   var c = folder('魔方求解')
   c.add(controls, 'algorithm', algorithms).setValue(algorithms[0]).name('算法').listen()
