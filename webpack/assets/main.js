@@ -252,6 +252,7 @@ function solve (selectedAlg) {
             showLoaderOnConfirm: true,
             imageUrl: "/static/img/loading.gif",
             showCancelButton: false,
+            closeOnClickOutside: false,
           });
 
           $.ajax({
@@ -265,6 +266,7 @@ function solve (selectedAlg) {
               async: true,
               success: function(data) {
                 if (data.code == '1') {
+                  swal.close()
                   opt = data.moves
                   controls.steps = opt
                   console.log('Algorithm:', alg)

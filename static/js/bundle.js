@@ -294,10 +294,11 @@
 
 	          swal({
 	            text: "正在求解中...",
-	            showConfirmButton: false,
+	            showConfirmButton: true,
 	            showLoaderOnConfirm: true,
 	            imageUrl: "/static/img/loading.gif",
-	            showCancelButton: true,
+	            showCancelButton: false,
+	            closeOnClickOutside: false,
 	          });
 
 	          $.ajax({
@@ -311,6 +312,7 @@
 	              async: true,
 	              success: function(data) {
 	                if (data.code == '1') {
+	                  swal.close()
 	                  opt = data.moves
 	                  controls.steps = opt
 	                  console.log('Algorithm:', alg)
