@@ -34,18 +34,18 @@ class CFOPSolver(object):
         solver = CrossSolver(self.cube)
         cross = solver.solve()
         result += cross
+
         solver = F2LSolver(self.cube)
         for i, f2l_single in enumerate(solver.solve(), 1):
             result += f2l_single[1]
+
         solver = OLLSolver(self.cube)
         oll = solver.solve()
         result += oll
+
         solver = PLLSolver(self.cube)
         pll = solver.solve()
         result += pll
+
+        result.optimise()
         return result
-
-
-if __name__ == '__main__':
-    s = 'LLLBUUUBBDRFRLFBFBRDRUFRRUFDLDDRBRLLFDBLBFUULUBDDDFURF'
-    print(CFOPSolver(s).solve())
