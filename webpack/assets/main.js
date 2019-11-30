@@ -251,7 +251,7 @@ function solve (selectedAlg) {
             showConfirmButton: false,
             showLoaderOnConfirm: true,
             imageUrl: "/static/img/loading.gif",
-            closeOnClickOutside: false,
+            allowOutsideClick: false,
           });
 
           $.ajax({
