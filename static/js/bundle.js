@@ -264,7 +264,15 @@
 
 
 	function solve (selectedAlg) {
-	  // 层先法
+
+	  if (cube.getState() == 'UUUUUUUUULLLLLLLLLFFFFFFFFFRRRRRRRRRBBBBBBBBBDDDDDDDDD'){
+	    swal({
+	      text: "魔方已处于还原状态",
+	      type: "info"
+	    });
+	  }
+	  else{
+	    // 层先法
 	  if (selectedAlg == algorithms[0]) {
 	    var alg = solver.solve(new State(cube.getState()))
 	    var opt = algorithm.optimize(alg)
@@ -355,6 +363,11 @@
 	    });
 	  }
 	  else alert('Error Algorithm!');
+
+
+	  }
+
+
 	}
 
 	module.exports = cube
