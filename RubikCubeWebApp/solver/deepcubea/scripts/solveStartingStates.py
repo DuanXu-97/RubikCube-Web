@@ -32,8 +32,8 @@ def runMethods(state, args=Config()):
 
     useGPU = bool(args.use_gpu)
 
-    from ml_utils import nnet_utils
-    from ml_utils import search_utils
+    from RubikCubeWebApp.solver.deepcubea.ml_utils import nnet_utils
+    from RubikCubeWebApp.solver.deepcubea.ml_utils import search_utils
 
     gpuNum = 0
     nnet = nnet_utils.loadNnet(args.model_loc, args.model_name, useGPU, Environment, gpuNum=gpuNum)
