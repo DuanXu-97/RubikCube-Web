@@ -60,11 +60,26 @@ def cfop_test():
     # moves = solver.solve()
     # return moves
 
+def gen_testcase():
+    with open(os.path.join(BASE_DIR, 'RubikCubeWebApp/solver/deepcubea/states_by_id.pkl'), "rb") as f:
+        inputData = pickle.load(f)
+        states_by_id = inputData['states']
+
+    with open(os.path.join(BASE_DIR, 'RubikCubeWebApp/solver/deepcubea/states_by_id_1.pkl'), 'wb') as f_w:
+        pickle.dump(states_by_id, f_w)
+
+
 
 if __name__ == '__main__':
-    str = u'123'
-    qwe = type(str)
-    print(type(qwe))
+    if str(sys.argv[1]) == '1':
+        gen_testcase()
+    else:
+        with open(os.path.join(BASE_DIR, 'RubikCubeWebApp/solver/deepcubea/states_by_id_1.pkl'), 'rb') as f:
+            states_by_id = pickle.load(f)
+
+        print(states_by_id)
+
+
 
 
 
