@@ -2,12 +2,8 @@ import os
 import time
 import gc
 import sys
-try:
-    from RubikCubeWebApp.solver.deepcubea.scripts.config import Config
-except ImportError:
-    sys.path.append('./')
-    from config import Config
-
+sys.path.append('../../../../')
+from RubikCubeWebApp.solver.deepcubea.scripts.config import Config
 
 
 def deleteIfExists(filename):
@@ -30,11 +26,7 @@ def runMethods(state, args=Config()):
     :param args: some configs of model
     :return:
     """
-    try:
-        from RubikCubeWebApp.kernel.environments.cube_interactive_simple import Cube
-    except ImportError:
-        sys.path.append('../')
-        from environments.cube_interactive_simple import Cube
+    from RubikCubeWebApp.solver.deepcubea.environments.cube_interactive_simple import Cube
 
     Environment = Cube(N=3, moveType="qtm")
 
