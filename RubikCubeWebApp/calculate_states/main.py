@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
+
 sys.path.append('../')
 from RubikCubeWebApp.calculate_states.model.cube import Cube
 from RubikCubeWebApp.calculate_states.cube_string import CubeString
@@ -41,19 +42,32 @@ def calculate_states(s):
         for ch in string:
             state.append(Colors(Moves[ch].value))
         cube = Cube(state)
-        ret = cube.get_states()
+        temp = cube.get_states()
+        if temp:
+            # 将结果转换为神经网络的输入格式
+            FEToState = [6, 3, 0, 7, 4, 1, 8, 5, 2, 15, 12, 9, 16, 13, 10, 17, 14, 11, 24, 21, 18, 25, 22, 19, 26, 23,
+                         20, 33, 30, 27, 34, 31, 28, 35, 32, 29, 38, 41, 44, 37, 40, 43, 36, 39, 42, 51, 48, 45, 52, 49,
+                         46, 53, 50, 47]
+            ret = [temp[idx] for idx in FEToState]
     return ret
 
 
 def convert_states_to_str(states):
     """
-    给定三阶魔方的状态数组，以web的表示形式输出
+    给定DeepCubeA表示状态的输入，以web的表示形式（ULFRBD）输出
 
-    :param states: 长度为54的列表
+    :param states: 长度为54的列表，神经网络的输入
     :return: 用 ULFRBD 等字符表示魔方各面状态的字符串
     """
+    # 将神经网络的输入进行转换
+    StateToFE = [2, 5, 8, 1, 4, 7, 0, 3, 6, 11, 14, 17, 10, 13, 16, 9, 12, 15, 20, 23, 26, 19, 22, 25, 18, 21, 24,
+                 29, 32, 35, 28, 31, 34, 27, 30, 33, 42, 39, 36, 43, 40, 37, 44, 41, 38, 47, 50, 53, 46, 49, 52,
+                 45, 48, 51]
+    state = [states[idx] for idx in StateToFE]
+
+    # 将数字转换为对应的面
     temp = []
-    for s in states:
+    for s in state:
         temp.append(Moves(s // 9).name)
     s = ''.join(temp)
     up = s[0:9]
