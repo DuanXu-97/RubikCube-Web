@@ -63,7 +63,6 @@ class SolveCubeView(View):
         # DeepCubeA
         elif method_type == 3:
             state_by_id = calculate_states(state_str)
-
             try:
                 moves, _, _ = deepcubea(state_by_id)
             except AssertionError:
