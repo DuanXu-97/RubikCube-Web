@@ -13,3 +13,4 @@ class Config:
         self.nnet_parallel = 500
         self.depth_penalty = 0.2
         self.verbose = 'store_true'
+
