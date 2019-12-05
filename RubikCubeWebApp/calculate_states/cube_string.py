@@ -32,6 +32,3 @@ class CubeString:
             for o in ordering:
                 ret += self.sub[Moves[o].value]
         return ''.join(ret)
-
-    def __str__(self):
-        return self.cube_string

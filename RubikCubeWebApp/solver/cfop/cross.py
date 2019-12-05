@@ -16,12 +16,6 @@ class CrossSolver(object):
     def __init__(self, cube=None):
         self.cube = cube
 
-    def feed(self, cube):
-        """
-        Feed Cube to the solver.
-        """
-        self.cube = cube
-
     @staticmethod
     def _rotate(edges, step):
         """
