@@ -1,0 +1,6 @@
+language: python
+services:
+  - docker
+before_install:
+  - docker build -t rubikcube .
+  - docker run -p 8000:8000 -d rubikcube

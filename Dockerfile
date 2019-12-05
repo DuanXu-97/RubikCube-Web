@@ -17,6 +17,12 @@ RUN conda install --yes \
 RUN pip install --upgrade \
       dm-sonnet==1.10 \
       matplotlib==2.2.3 \
+      kociemba==1.2.1
 
 RUN pip install django==1.11 \
     && apt-get install -y apache2 libapache2-mod-wsgi
+
+COPY . /code
+WORKDIR /code
+EXPOSE 8000
+CMD ["python", "manage.py","runserver"]
