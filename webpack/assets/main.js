@@ -19,10 +19,27 @@ var canvas = document.getElementById('canvas')
 var colorSelector = $("#color-select")
 
 $("#color-select button").click(function(){
+    old_state = cube.getState();
     colorControls.sticker = util.charToFace($(this).attr("id").split("-")[1][0]);
     colorControls.cubie.setSticker(util.charToFace(colorControls.face), colorControls.sticker);
     colorSelector.css("display", "none");
-    controls.state = cube.getState()
+    new_state = cube.getState();
+    if (old_state[4]==new_state[4] &&
+        old_state[13]==new_state[13] &&
+        old_state[22]==new_state[22] &&
+        old_state[31]==new_state[31] &&
+        old_state[40]==new_state[40] &&
+        old_state[49]==new_state[49]){
+            controls.state = cube.getState()
+        }
+    else{
+        cube.setState(old_state)
+        swal({
+            text: "中间色块无法修改",
+            type: "error"
+          });
+    }
+
 })
 
 window.onresize = function(){
@@ -289,23 +306,6 @@ function solve (selectedAlg) {
                 }
               }
           });
-        }
-        else if (data.code == '2') {
-          swal({
-            text: "该状态搜索时间较长，已转为公式法",
-            type: "info",
-          }).then(function() {
-              controls.algorithm = algorithms[0]
-              var alg = solver.solve(new State(cube.getState()))
-              var opt = algorithm.optimize(alg)
-
-              controls.steps = opt
-              console.log('Algorithm:', alg)
-
-              if (controls.isAnimationAuto) {
-                moveAllForward();
-              }
-            });
         }
         else{
           swal({
