@@ -131,6 +131,9 @@ if __name__ == '__main__':
     result['moves_list'] = mean_time
     result['error_state_list'] = mean_time
 
+    print(mean_time)
+    print(mean_length)
+
     with open('test_performance_result.pkl', 'wb') as f:
         pickle.dump(result, f)
 
