@@ -35,6 +35,11 @@ def test_deepcubea(state_list):
             solve_time = end_time - start_time
             time_list.append(solve_time)
             moves_list.append(moves)
+            print('==============')
+            print('state: ', state)
+            print('solve_time: ', solve_time)
+            print('moves: ', moves)
+            print('==============')
         except Exception as e:
             print(e)
             error_state_list.append(state)
@@ -59,6 +64,11 @@ def test_kociemba(state_list):
             solve_time = end_time - start_time
             time_list.append(solve_time)
             moves_list.append(moves)
+            print('==============')
+            print('state: ', state)
+            print('solve_time: ', solve_time)
+            print('moves: ', moves)
+            print('==============')
         except Exception as e:
             print(e)
             error_state_list.append(state)
@@ -83,6 +93,11 @@ def test_cfop(state_list):
             solve_time = end_time - start_time
             time_list.append(solve_time)
             moves_list.append(moves)
+            print('==============')
+            print('state: ', state)
+            print('solve_time: ', solve_time)
+            print('moves: ', moves)
+            print('==============')
         except Exception as e:
             print(e)
             error_state_list.append(state)
@@ -115,7 +130,7 @@ if __name__ == '__main__':
     result['time_list'] = mean_time
     result['moves_list'] = mean_time
     result['error_state_list'] = mean_time
-    
+
     with open('test_performance_result.pkl', 'wb') as f:
         pickle.dump(result, f)
 
