@@ -78,3 +78,16 @@ def convert_states_to_str(states):
     back = s[36:45][::-1]
     front = s[45:54]
     return up + left + front + right + back + down
+
+
+def refine_soln(soln):
+    refined_soln = []
+    for step in soln:
+        if step[-1] == -1:
+            refined_soln.append(step[0] + '\'')
+        else:
+            refined_soln.append(step[0])
+
+    refined_soln_str = ' '.join(refined_soln)
+    print(refined_soln_str)
+    return refined_soln_str

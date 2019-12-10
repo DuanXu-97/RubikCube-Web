@@ -6,7 +6,7 @@ from .settings import BASE_DIR
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
-from .calculate_states.main import calculate_states, simple_check_input
+from .calculate_states.main import calculate_states, simple_check_input, refine_soln
 from .solver.deepcubea.scripts.solveStartingStates import runMethods as deepcubea
 from .solver.kociemba.kociemba_solver import KociembaSolver
 from .solver.cfop.cfop_solver import CFOPSolver
@@ -64,7 +64,8 @@ class SolveCubeView(View):
         elif method_type == 3:
             state_by_id = calculate_states(state_str)
             try:
-                moves, _, _ = deepcubea(state_by_id)
+                temp_moves, _, _ = deepcubea(state_by_id)
+                moves = refine_soln(temp_moves)
             except AssertionError:
                 return HttpResponse('{"code": -1, "message":"Illegal solution."}', content_type='application/json')
 
