@@ -15,6 +15,9 @@ def cal_mean_moves_length(moves_list):
     total_length = 0
     for moves in moves_list:
         move_list = moves.split(' ')
+        for move in moves:
+            if move[-1] == '2':
+                total_length += 1
         total_length += len(move_list)
 
     mean_moves_length = total_length / len(moves_list)
