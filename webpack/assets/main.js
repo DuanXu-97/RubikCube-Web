@@ -119,9 +119,9 @@ function initGui () {
   var st = folder('魔方状态')
   st.add(controls, 'scramble').name('随机打乱')
     .onChange(function () { cube.scramble(); controls.steps = ''; controls.movedSteps = '';})
-  st.add(controls, 'state').name('当前状态').listen()
-  st.add(controls, 'button').name('修改状态')
-    .onFinishChange(function () { cube.setState(controls.state); controls.steps = ''; controls.movedSteps = '';})
+//  st.add(controls, 'state').name('当前状态').listen()
+//  st.add(controls, 'button').name('修改状态')
+//    .onFinishChange(function () { cube.setState(controls.state); controls.steps = ''; controls.movedSteps = '';})
   st.add(controls, 'button').name('重置状态')
     .onFinishChange(function () { cube.setState('UUUUUUUUULLLLLLLLLFFFFFFFFFRRRRRRRRRBBBBBBBBBDDDDDDDDD'); controls.steps = ''; controls.movedSteps = '';})
 
@@ -143,9 +143,34 @@ function initGui () {
   s.add(controls, 'button').name('回退所有步骤')
     .onFinishChange(function () { moveAllBackward(); })
 
-  var test = folder('测试')
-  test.add(controls, 'button').name('测试层先法性能')
-    .onFinishChange(function () { testLayerFirst(); })
+  var des = folder('使用须知')
+  des.add(controls, 'button').name('使用说明')
+    .onFinishChange(function () {
+        swal({
+            title: "使用说明",
+            html: '<p>本应用为用户打造虚拟魔方环境，无论您是新人还是老手，都可以体验到无需实物就能玩转魔方的乐趣！同时，本应用提供多种算法用于魔方求解，适用于多种类型用户进行魔方求解训练。</p>'+
+            '<p>(1) 如果您想了解如何操作魔方，请参考按键说明。</p>'+
+            '<p>(2) 如果您是新人，想练习解魔方，可以参考层先法或CFOP公式法的求解步骤进行练习。不过遗憾的是，本应用仅提供训练功能，而不提供解法教学啦，如果想学习解法还请自行查阅。</p>'+
+            '<p>(3) 如果您是老手，我们也提供Kociemba和DeepCubeA两种短路径解法，相信您一定可以从中有所启发。</p>'
+        });
+    })
+  des.add(controls, 'button').name('按键说明')
+    .onFinishChange(function () {
+        swal({
+            title: "按键说明",
+            html: '<p>(1) 使用键盘ULFRBD键可以旋转魔方。</p>'+
+            '<p>(2) 按住鼠标拖动可以自由旋转视角。</p>'+
+            '<p>(3) 使用鼠标左键点击魔方色块可以选择颜色。</p>'+
+            '<p>(4) 在菜单栏选择算法后，点击解魔方，可以自动求解魔方。</p>'+
+            '<p>(5) 点击单步执行或单步回退，可以单步地执行或回退解法中的下一个操作。</p>'+
+            '<p>(6) 点击执行剩余步骤或回退所有步骤，可以一次性地执行或回退剩余步骤。</p>'+
+            '<p>限于篇幅，更多功能还请各位探索啦。</p>'
+        });
+    })
+
+//  var test = folder('测试')
+//  test.add(controls, 'button').name('测试层先法性能')
+//    .onFinishChange(function () { testLayerFirst(); })
 
   if (window.innerWidth <= 500) gui.close()
 
@@ -325,9 +350,24 @@ function solve (selectedAlg) {
 }
 
 function testLayerFirst(){
-    $.getJSON("test_states_by_face.json", function (data){
-         var start_time = new Date().getTime();
+    $.getJSON("/static/js/test_states_by_face.json", function (data){
+        var total_time = 0
+        var total_length = 0
+        for (var i = 0; i < 200; i++) {
+            var start_time = new Date().getTime();
+            var alg = solver.solve(new State(data[i]))
+            var moves = algorithm.optimize(alg)
+            var end_time = new Date().getTime();
+            var solve_time = end_time-start_time;
+            total_time += solve_time
+            total_length += moves.split(' ').length
+        }
 
+        var mean_time = total_time / 200;
+        var mean_length = total_length / 200;
+
+        alert(mean_time)
+        alert(mean_length)
     });
 }
 

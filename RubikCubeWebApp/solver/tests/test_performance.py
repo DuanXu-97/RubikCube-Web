@@ -21,7 +21,7 @@ def cal_mean_moves_length(moves_list):
                 total_length += 1
         total_length += len(move_list)
 
-    mean_moves_length = total_length / len(moves_list)
+    mean_moves_length = float(total_length) / float(len(moves_list))
 
     return mean_moves_length
 
