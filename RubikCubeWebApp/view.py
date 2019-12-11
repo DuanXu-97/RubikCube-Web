@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
 from .calculate_states.main import calculate_states, refine_soln
-from .verify_legality.check_cube_state import verify_legality
+from .verify_legality.check_cube_state import check
 from .solver.deepcubea.scripts.solveStartingStates import runMethods as deepcubea
 from .solver.kociemba.kociemba_solver import KociembaSolver
 from .solver.cfop.cfop_solver import CFOPSolver
@@ -84,9 +84,8 @@ class SolveCubeView(View):
 class VerifyLegality(View):
     def post(self, request):
         state_str = request.POST.get('state_str')
-        method_type = int(request.POST.get('method_type'))
 
-        is_legal = verify_legality(state_str)
+        is_legal = check(state_str)
         if is_legal is None:
             return HttpResponse('{"code": -1, "message":"Illegal Rubik cube status"}', content_type='application/json')
         else:
