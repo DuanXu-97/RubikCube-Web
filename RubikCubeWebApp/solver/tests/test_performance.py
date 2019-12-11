@@ -113,10 +113,10 @@ def test_cfop(state_list):
 
 if __name__ == '__main__':
     with open('test_states_by_converted_id_py2.pkl', 'rb') as f:
-        states_by_id_list = pickle.load(f)[:100]
+        states_by_id_list = pickle.load(f)[:200]
 
     with open('test_states_by_face_py2.pkl', 'rb') as f:
-        states_by_face_list = pickle.load(f)[:100]
+        states_by_face_list = pickle.load(f)[:200]
 
     mean_time = dict()
     mean_length = dict()
@@ -129,11 +129,14 @@ if __name__ == '__main__':
 
     result = dict()
     result['mean_time'] = mean_time
-    result['mean_length'] = mean_time
-    result['time_list'] = mean_time
-    result['moves_list'] = mean_time
-    result['error_state_list'] = mean_time
+    result['mean_length'] = mean_length
+    result['time_list'] = time_list
+    result['moves_list'] = moves_list
+    result['error_state_list'] = error_state_list
 
+    print(time_list)
+    print(moves_list)
+    print(len(time_list['cfop']), len(time_list['kociemba']), len(time_list['deepcubea']))
     print(mean_time)
     print(mean_length)
 
