@@ -143,6 +143,10 @@ function initGui () {
   s.add(controls, 'button').name('回退所有步骤')
     .onFinishChange(function () { moveAllBackward(); })
 
+  var test = folder('测试')
+  test.add(controls, 'button').name('测试层先法性能')
+    .onFinishChange(function () { testLayerFirst(); })
+
   if (window.innerWidth <= 500) gui.close()
 
   function folder (name) {
@@ -317,11 +321,14 @@ function solve (selectedAlg) {
     });
   }
   else alert('Error Algorithm!');
-
-
   }
+}
 
+function testLayerFirst(){
+    $.getJSON("test_states_by_face.json", function (data){
+         var start_time = new Date().getTime();
 
+    });
 }
 
 module.exports = cube

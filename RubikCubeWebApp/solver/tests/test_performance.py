@@ -5,6 +5,7 @@ from RubikCubeWebApp.calculate_states.main import refine_soln
 from RubikCubeWebApp.solver.kociemba.kociemba_solver import KociembaSolver
 from RubikCubeWebApp.solver.cfop.cfop_solver import CFOPSolver
 import time
+import json
 try:
     import pickle
 except Exception:
@@ -111,37 +112,50 @@ def test_cfop(state_list):
     return mean_time, mean_length, time_list, moves_list, error_state_list
 
 
-if __name__ == '__main__':
-    with open('test_states_by_converted_id_py2.pkl', 'rb') as f:
-        states_by_id_list = pickle.load(f)[:200]
-
+def gen_states_json():
     with open('test_states_by_face_py2.pkl', 'rb') as f:
-        states_by_face_list = pickle.load(f)[:200]
+        states_by_face_list = pickle.load(f)
 
-    mean_time = dict()
-    mean_length = dict()
-    time_list = dict()
-    moves_list = dict()
-    error_state_list = dict()
-    mean_time['cfop'], mean_length['cfop'], time_list['cfop'], moves_list['cfop'], error_state_list['cfop'] = test_cfop(states_by_face_list)
-    mean_time['kociemba'], mean_length['kociemba'], time_list['kociemba'], moves_list['kociemba'], error_state_list['kociemba'] = test_kociemba(states_by_face_list)
-    mean_time['deepcubea'], mean_length['deepcubea'], time_list['deepcubea'], moves_list['deepcubea'], error_state_list['deepcubea'] = test_deepcubea(states_by_id_list)
+    with open('test_states_by_face.json', 'w') as f:
+        json.dump(states_by_face_list, f)
 
-    result = dict()
-    result['mean_time'] = mean_time
-    result['mean_length'] = mean_length
-    result['time_list'] = time_list
-    result['moves_list'] = moves_list
-    result['error_state_list'] = error_state_list
 
-    print(time_list)
-    print(moves_list)
-    print(len(time_list['cfop']), len(time_list['kociemba']), len(time_list['deepcubea']))
-    print(mean_time)
-    print(mean_length)
+if __name__ == '__main__':
+    # layerfirst method
+    if sys.argv[1] == 'LFM':
+        gen_states_json()
 
-    with open('test_performance_result.pkl', 'wb') as f:
-        pickle.dump(result, f)
+    else:
+        with open('test_states_by_converted_id_py2.pkl', 'rb') as f:
+            states_by_id_list = pickle.load(f)[:200]
+
+        with open('test_states_by_face_py2.pkl', 'rb') as f:
+            states_by_face_list = pickle.load(f)[:200]
+
+        mean_time = dict()
+        mean_length = dict()
+        time_list = dict()
+        moves_list = dict()
+        error_state_list = dict()
+        mean_time['cfop'], mean_length['cfop'], time_list['cfop'], moves_list['cfop'], error_state_list['cfop'] = test_cfop(states_by_face_list)
+        mean_time['kociemba'], mean_length['kociemba'], time_list['kociemba'], moves_list['kociemba'], error_state_list['kociemba'] = test_kociemba(states_by_face_list)
+        mean_time['deepcubea'], mean_length['deepcubea'], time_list['deepcubea'], moves_list['deepcubea'], error_state_list['deepcubea'] = test_deepcubea(states_by_id_list)
+
+        result = dict()
+        result['mean_time'] = mean_time
+        result['mean_length'] = mean_length
+        result['time_list'] = time_list
+        result['moves_list'] = moves_list
+        result['error_state_list'] = error_state_list
+
+        print(time_list)
+        print(moves_list)
+        print(len(time_list['cfop']), len(time_list['kociemba']), len(time_list['deepcubea']))
+        print(mean_time)
+        print(mean_length)
+
+        with open('test_performance_result.pkl', 'wb') as f:
+            pickle.dump(result, f)
 
 
 
