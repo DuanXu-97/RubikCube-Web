@@ -5,7 +5,7 @@ sys.path.append('../')
 from RubikCubeWebApp.calculate_states.model.cube import Cube
 from RubikCubeWebApp.calculate_states.cube_string import CubeString
 from RubikCubeWebApp.calculate_states.enums import Colors, Moves
-from RubikCubeWebApp.verify_legality.verify_legality import verify_legality
+from RubikCubeWebApp.verify_legality.check_cube_state import check
 
 
 def calculate_states(s):
@@ -16,7 +16,7 @@ def calculate_states(s):
     :return: 长度为54的列表，作为神经网络的输入；若输入有误则返回None
     """
     ret = None
-    if verify_legality(s):
+    if check(s):
         state = []
         # 将web所给的 ULFRBD 顺序转换为 UDLRBF 顺序
         string = CubeString(s, ordering='ULFRBD').reorder(ordering='UDLRBF')

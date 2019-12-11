@@ -27,7 +27,7 @@ def simple_check_input(s):
     return ret
 
 
-def verify_legality(s):
+def check(s):
     simple_check_result = simple_check_input(s)
     if simple_check_result is True:
         state = []
