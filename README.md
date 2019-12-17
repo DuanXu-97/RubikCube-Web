@@ -26,7 +26,7 @@ Please try youself to explore more interesting functions.
 RubikCube-Web provides four algorithms for solving Rubik's Cube, which are LayerFirst, CFOP, Kociemba and DeepCubeA.
 
 #### DeepCubeA
-The kernel of RubikCube-Web to solve the rubik's cube is similar to DeepCubeA<sup>[1]</sup>.
+DeepCubeA<sup>[1]</sup> is an algorithm based on reinforcement learning and A * search.
 
 - The input of DeepCubeA should describe the starting state of the cube. The form of the input is as follows:
 
