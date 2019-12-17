@@ -20,10 +20,12 @@ After selecting the algorithm in the menu bar, click Solve Rubik's Cube to autom
 The move can be single-step execute or roll back by clicking single-step execution or single-step rollback.
 
 - **And so on:**
-Please try youself to explore more functions.
+Please try youself to explore more interesting functions.
 
 ## Solvers
-RubikCube-Web provides four algorithms for solving Rubik's Cube, which are LayerFirst, CFOP, Kociemba and DeepCubeA algorithms.
+RubikCube-Web provides four algorithms for solving Rubik's Cube, which are LayerFirst, CFOP, Kociemba and DeepCubeA.
+
+#### DeepCubeA
 The kernel of RubikCube-Web to solve the rubik's cube is similar to DeepCubeA<sup>[1]</sup>.
 
 - The input of DeepCubeA should describe the starting state of the cube. The form of the input is as follows:
