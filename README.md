@@ -1,13 +1,29 @@
 # RubikCube-Web
-This project is a prototype of RubikCube-Web.
+RubikCube-Web is an open-source web application designed to help users practice solving Rubik's Cube. With RubikCube-Web you can learn the fun of playing Rubik's Cube without real objects! At the same time, RubikCube-Web provides a variety of algorithms for solving Rubik's Cube, which is suitable for many types of users to practice solving Rubik's Cube.
 
 ## Usage
-The url of this project is http://159.226.5.97:9006/.
+You can visit RubikCube-Web through the url: http://159.226.5.97:9006/. RubikCube-Web contains the following functions:
 
-- **Changing states manually:**
-You can change the color of a cubie by clicking the right mouse button, and you also can click the left mouse button to rotate a specific face.
+- **Rotating face:**
+The face of cube can be rotated by pressing ULFRBD on the keyboard.
 
-## Kernel
+- **Changing colors of cubie:**
+The color of a cubie can be changed by clicking the left mouse button.
+
+- **Rotating view:**
+The view can be rotated by holding the mouse and dragging.
+
+- **Solving:**
+After selecting the algorithm in the menu bar, click Solve Rubik's Cube to automatically solve the Rubik's Cube.
+
+- **Single-step execution:**
+The move can be single-step execute or roll back by clicking single-step execution or single-step rollback.
+
+- **And so on:**
+Please try youself to explore more functions.
+
+## Solvers
+RubikCube-Web provides four algorithms for solving Rubik's Cube, which are LayerFirst, CFOP, Kociemba and DeepCubeA algorithms.
 The kernel of RubikCube-Web to solve the rubik's cube is similar to DeepCubeA<sup>[1]</sup>.
 
 - The input of DeepCubeA should describe the starting state of the cube. The form of the input is as follows:
@@ -48,12 +64,4 @@ The kernel of RubikCube-Web to solve the rubik's cube is similar to DeepCubeA<su
 [3] http://deepcube.igb.uci.edu/
 
 
-## TODO
-- Learn the interfaces of https://github.com/twinone/rubik-web
-- Apply the deep learning model in Agostinelli F, Mcaleer S, Shmakov A, et al. Solving the Rubik’s cube with deep reinforcement learning and search[J], 2019, 1(8): 356-363.
-- Learn the code in https://codeocean.com/capsule/5723040/
-
-## 开题报告
-
-![](https://image-bed-1253366698.cos.ap-guangzhou.myqcloud.com/mess/contents.png)
 
