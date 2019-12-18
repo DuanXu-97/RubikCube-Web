@@ -20,7 +20,7 @@ After selecting the algorithm in the menu bar, click Solve Rubik's Cube to autom
 The move can be single-step execute or roll back by clicking single-step execution or single-step rollback.
 
 - **And so on:**
-Please try youself to explore more interesting functions.
+Please try yourself to explore more interesting functions.
 
 ## Solvers
 RubikCube-Web provides four algorithms for solving Rubik's Cube, which are LayerFirst, CFOP, Kociemba and DeepCubeA.
