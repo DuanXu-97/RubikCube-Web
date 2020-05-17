@@ -6,7 +6,7 @@ RubikCube-Web is an open-source web application designed to help users practice 
 </div>
 
 ## Usage
-You can visit RubikCube-Web through the url: http://159.226.5.97:9006/. RubikCube-Web contains the following functions:
+RubikCube-Web contains the following functions:
 
 - **Rotating face:**
 The face of cube can be rotated by pressing ULFRBD on the keyboard.
