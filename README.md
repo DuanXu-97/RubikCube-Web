@@ -2,7 +2,7 @@
 RubikCube-Web is an open-source web application designed to help users practice solving Rubik's Cube. With RubikCube-Web you can learn the fun of playing Rubik's Cube without real objects! At the same time, RubikCube-Web provides a variety of algorithms for solving Rubik's Cube, which is suitable for many types of users to practice solving Rubik's Cube.
 
 <div align=center>
-<img src="https://raw.githubusercontent.com/DuanXu-97/RubikCube-Web/master/doc/UI_1.png" alt="UI Image" width="500" height="280"/>
+<img src="https://raw.githubusercontent.com/DuanXu-97/RubikCube-Web/master/doc/UI_1.png" alt="UI Image" width="600" height="280"/>
 </div>
 
 ## Usage
